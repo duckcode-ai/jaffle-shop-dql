@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1760 880" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1020"/>
+      <stop offset="100%" stop-color="#1a2040"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#7c5cff"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1760" height="880" fill="url(#bg)"/>
+
+  <!-- faint grid -->
+  <g stroke="#ffffff" stroke-opacity="0.04" stroke-width="1">
+    <path d="M0 220 H1760 M0 440 H1760 M0 660 H1760"/>
+    <path d="M440 0 V880 M880 0 V880 M1320 0 V880"/>
+  </g>
+
+  <!-- left: title block -->
+  <g transform="translate(110, 210)">
+    <text x="0" y="0" font-size="28" fill="#8aa0c7" letter-spacing="6">DQL · JAFFLE SHOP EXAMPLE</text>
+    <text x="0" y="110" font-size="92" font-weight="700" fill="#ffffff">Notebook + Blocks</text>
+    <text x="0" y="210" font-size="92" font-weight="700" fill="url(#accent)">on your dbt semantic layer.</text>
+    <text x="0" y="290" font-size="28" fill="#c9d4ee">Certified blocks · Lineage DAG · DuckDB-backed</text>
+
+    <g transform="translate(0, 360)">
+      <rect x="0" y="0" width="260" height="52" rx="26" fill="#7c5cff"/>
+      <text x="130" y="33" text-anchor="middle" font-size="20" font-weight="600" fill="#ffffff">npm run dql:notebook</text>
+
+      <rect x="280" y="0" width="220" height="52" rx="26" fill="none" stroke="#8aa0c7" stroke-width="1.5"/>
+      <text x="390" y="33" text-anchor="middle" font-size="20" font-weight="500" fill="#c9d4ee">4 ready notebooks</text>
+    </g>
+  </g>
+
+  <!-- right: notebook mock -->
+  <g transform="translate(900, 110)" filter="url(#glow)">
+    <rect x="0" y="0" width="760" height="660" rx="18" fill="#121a33" stroke="#2a335e"/>
+    <!-- header bar -->
+    <rect x="0" y="0" width="760" height="46" rx="18" fill="#1a2240"/>
+    <rect x="0" y="28" width="760" height="18" fill="#1a2240"/>
+    <circle cx="22" cy="23" r="6" fill="#ff6057"/>
+    <circle cx="44" cy="23" r="6" fill="#ffbd2e"/>
+    <circle cx="66" cy="23" r="6" fill="#27c93f"/>
+    <text x="96" y="28" font-size="14" fill="#c9d4ee">revenue_review.dqlnb</text>
+
+    <!-- cell: sql -->
+    <g transform="translate(24, 70)">
+      <rect width="712" height="90" rx="8" fill="#0d1530" stroke="#22305c"/>
+      <text x="16" y="28" font-size="13" fill="#8aa0c7">SQL · monthly revenue</text>
+      <text x="16" y="58" font-size="14" fill="#9fe7c5" font-family="ui-monospace, Menlo, monospace">SELECT @metric(revenue), @dim(month) FROM fct_orders</text>
+      <text x="16" y="78" font-size="13" fill="#7c5cff" font-family="ui-monospace, Menlo, monospace">24 rows · 41 ms</text>
+    </g>
+
+    <!-- cell: chart -->
+    <g transform="translate(24, 180)">
+      <rect width="712" height="260" rx="8" fill="#0d1530" stroke="#22305c"/>
+      <text x="16" y="28" font-size="13" fill="#8aa0c7">Chart · revenue by month</text>
+      <!-- bars -->
+      <g transform="translate(40, 60)">
+        <rect x="0"   y="160" width="36" height="40"  rx="3" fill="url(#accent)"/>
+        <rect x="56"  y="130" width="36" height="70"  rx="3" fill="url(#accent)"/>
+        <rect x="112" y="100" width="36" height="100" rx="3" fill="url(#accent)"/>
+        <rect x="168" y="110" width="36" height="90"  rx="3" fill="url(#accent)"/>
+        <rect x="224" y="70"  width="36" height="130" rx="3" fill="url(#accent)"/>
+        <rect x="280" y="50"  width="36" height="150" rx="3" fill="url(#accent)"/>
+        <rect x="336" y="30"  width="36" height="170" rx="3" fill="url(#accent)"/>
+        <rect x="392" y="45"  width="36" height="155" rx="3" fill="url(#accent)"/>
+        <rect x="448" y="20"  width="36" height="180" rx="3" fill="url(#accent)"/>
+        <rect x="504" y="35"  width="36" height="165" rx="3" fill="url(#accent)"/>
+        <rect x="560" y="55"  width="36" height="145" rx="3" fill="url(#accent)"/>
+        <rect x="616" y="15"  width="36" height="185" rx="3" fill="url(#accent)"/>
+        <line x1="0" y1="200" x2="660" y2="200" stroke="#2a335e"/>
+        <line x1="0" y1="80" x2="660" y2="80" stroke="#2a335e" stroke-dasharray="4 4"/>
+        <text x="0" y="76" font-size="11" fill="#8aa0c7">$50k floor</text>
+      </g>
+    </g>
+
+    <!-- cell: block binding -->
+    <g transform="translate(24, 460)">
+      <rect width="712" height="170" rx="8" fill="#0d1530" stroke="#27c93f" stroke-opacity="0.5"/>
+      <rect width="4" height="170" fill="#27c93f"/>
+      <text x="20" y="28" font-size="13" fill="#c9d4ee">🔒 blocks/finance/monthly_revenue.dql · v1 · certified</text>
+      <text x="20" y="58" font-size="12" fill="#8aa0c7" font-family="ui-monospace, Menlo, monospace">domain: finance   owner: revenue-team   trust: 1.00</text>
+      <!-- kpi row -->
+      <g transform="translate(20, 80)">
+        <rect width="210" height="70" rx="6" fill="#0a1028"/>
+        <text x="16" y="26" font-size="12" fill="#8aa0c7">TOTAL REVENUE</text>
+        <text x="16" y="56" font-size="24" font-weight="700" fill="#ffffff">$1,812,459</text>
+
+        <rect x="230" width="210" height="70" rx="6" fill="#0a1028"/>
+        <text x="246" y="26" font-size="12" fill="#8aa0c7">ORDERS</text>
+        <text x="246" y="56" font-size="24" font-weight="700" fill="#ffffff">461,320</text>
+
+        <rect x="460" width="212" height="70" rx="6" fill="#0a1028"/>
+        <text x="476" y="26" font-size="12" fill="#8aa0c7">MONTHS BELOW FLOOR</text>
+        <text x="476" y="56" font-size="24" font-weight="700" fill="#ff8a65">3</text>
+      </g>
+    </g>
+  </g>
+</svg>

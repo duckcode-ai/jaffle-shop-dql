@@ -1,4 +1,22 @@
-# Jaffle Shop — DQL example
+<h1 align="center">Jaffle Shop — DQL example</h1>
+
+<p align="center">
+  <em>A Hex-grade notebook + certified blocks + lineage, layered on the canonical Jaffle Shop.</em>
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache%202.0-blue.svg"></a>
+  <a href="https://www.npmjs.com/package/@duckcodeailabs/dql-cli"><img alt="DQL CLI" src="https://img.shields.io/npm/v/@duckcodeailabs/dql-cli?label=%40duckcodeailabs%2Fdql-cli&color=0a7"></a>
+  <a href="https://www.getdbt.com/"><img alt="dbt" src="https://img.shields.io/badge/dbt-1.10-FF694B?logo=dbt&logoColor=white"></a>
+  <a href="https://duckdb.org/"><img alt="DuckDB" src="https://img.shields.io/badge/DuckDB-ready-FFF000?logo=duckdb&logoColor=black"></a>
+  <a href="https://github.com/dbt-labs/jaffle-shop"><img alt="Seeded from dbt-labs/jaffle-shop" src="https://img.shields.io/badge/seed-dbt--labs%2Fjaffle--shop-262a38"></a>
+</p>
+
+<p align="center">
+  <img src="docs/hero.svg" alt="DQL notebook rendering the Jaffle Shop revenue review" width="880">
+</p>
+
+> 📸 This hero is an illustrative SVG. For a live-screenshot version, run `npm run dql:notebook`, open `notebooks/revenue_review.dqlnb`, save a PNG into `docs/hero.png`, and swap the `src` above to `docs/hero.png`.
 
 A complete, runnable example of [DQL](https://github.com/duckcode-ai/dql) on top of the canonical [Jaffle Shop](https://github.com/dbt-labs/jaffle-shop) dataset. Build it locally and you get:
 
