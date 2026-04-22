@@ -1,0 +1,14 @@
+name: order_count
+label: order_count
+description: ""
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(1)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: orders.order_count
+  objectName: order_count

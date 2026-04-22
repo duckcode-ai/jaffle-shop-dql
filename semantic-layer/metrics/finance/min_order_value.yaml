@@ -1,0 +1,14 @@
+name: min_order_value
+label: min_order_value
+description: ""
+domain: finance
+table: fct_orders
+cube: orders
+sql: "MIN(order_total)"
+type: min
+aggregation: min
+source:
+  provider: dbt
+  objectType: measure
+  objectId: orders.min_order_value
+  objectName: min_order_value

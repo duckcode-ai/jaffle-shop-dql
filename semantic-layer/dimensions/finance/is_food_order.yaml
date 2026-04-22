@@ -1,0 +1,13 @@
+name: is_food_order
+label: is_food_order
+description: ""
+domain: finance
+table: fct_orders
+cube: orders
+sql: is_food_order
+type: string
+source:
+  provider: dbt
+  objectType: dimension
+  objectId: orders.is_food_order
+  objectName: is_food_order

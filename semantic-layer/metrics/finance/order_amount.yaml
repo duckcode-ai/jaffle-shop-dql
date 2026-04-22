@@ -1,0 +1,14 @@
+name: order_amount
+label: order_amount
+description: "The cost of fulfilling each order"
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(order_cost)"
+type: sum
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: order_amount
+  objectName: order_amount

@@ -1,0 +1,26 @@
+block "Customer Segments" {
+    domain = "customer"
+    type = "custom"
+    description = "Counts customers and average lifetime behaviour (orders, spend) per customer_type from `dim_customers`. Owned by growth for segment reviews."
+    owner = "growth@jaffle.example"
+    tags = ["customers", "segmentation", "lifetime", "growth"]
+
+    query = """
+        SELECT
+            customer_type,
+            COUNT(*) AS customers,
+            ROUND(AVG(count_lifetime_orders), 2) AS avg_lifetime_orders,
+            ROUND(AVG(lifetime_spend), 2) AS avg_lifetime_spend
+        FROM dim_customers
+        GROUP BY 1
+        ORDER BY customers DESC
+    """
+
+    visualization {
+        chart = "table"
+    }
+
+    tests {
+        assert row_count > 0
+    }
+}

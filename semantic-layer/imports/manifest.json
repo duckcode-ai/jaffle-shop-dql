@@ -1,0 +1,638 @@
+{
+  "version": 1,
+  "mode": "imported",
+  "provider": "dbt",
+  "importedAt": "2026-04-15T15:24:48.631Z",
+  "source": {
+    "projectPath": "."
+  },
+  "warnings": [
+    "No dbt hierarchies were imported; dbt semantic models were normalized into cubes, measures, dimensions, and joins."
+  ],
+  "generatedFiles": [
+    "semantic-layer/cubes/uncategorized/customers.yaml",
+    "semantic-layer/cubes/uncategorized/orders.yaml",
+    "semantic-layer/cubes/uncategorized/order_item.yaml",
+    "semantic-layer/metrics/uncategorized/count_lifetime_orders.yaml",
+    "semantic-layer/metrics/uncategorized/lifetime_spend_pretax.yaml",
+    "semantic-layer/metrics/uncategorized/lifetime_spend.yaml",
+    "semantic-layer/metrics/uncategorized/customers.yaml",
+    "semantic-layer/metrics/uncategorized/order_total.yaml",
+    "semantic-layer/metrics/uncategorized/order_count.yaml",
+    "semantic-layer/metrics/uncategorized/tax_paid.yaml",
+    "semantic-layer/metrics/uncategorized/customers_with_orders.yaml",
+    "semantic-layer/metrics/uncategorized/locations_with_orders.yaml",
+    "semantic-layer/metrics/uncategorized/order_cost.yaml",
+    "semantic-layer/metrics/uncategorized/order_value_p99.yaml",
+    "semantic-layer/metrics/uncategorized/discrete_order_value_p99.yaml",
+    "semantic-layer/metrics/uncategorized/food_orders.yaml",
+    "semantic-layer/metrics/uncategorized/max_order_value.yaml",
+    "semantic-layer/metrics/uncategorized/min_order_value.yaml",
+    "semantic-layer/metrics/uncategorized/revenue.yaml",
+    "semantic-layer/metrics/uncategorized/food_revenue.yaml",
+    "semantic-layer/metrics/uncategorized/drink_revenue.yaml",
+    "semantic-layer/metrics/uncategorized/large_order.yaml",
+    "semantic-layer/metrics/uncategorized/food_order_amount.yaml",
+    "semantic-layer/metrics/uncategorized/max_order_amount.yaml",
+    "semantic-layer/metrics/uncategorized/min_order_amount.yaml",
+    "semantic-layer/metrics/uncategorized/new_customer.yaml",
+    "semantic-layer/metrics/uncategorized/order_amount.yaml",
+    "semantic-layer/metrics/uncategorized/cumulative_order_amount.yaml",
+    "semantic-layer/metrics/uncategorized/cumulative_order_ammount_l1m.yaml",
+    "semantic-layer/metrics/uncategorized/cumulative_order_amount_mtd.yaml",
+    "semantic-layer/dimensions/uncategorized/customer_name.yaml",
+    "semantic-layer/dimensions/uncategorized/customer_type.yaml",
+    "semantic-layer/dimensions/uncategorized/first_ordered_at.yaml",
+    "semantic-layer/dimensions/uncategorized/last_ordered_at.yaml",
+    "semantic-layer/dimensions/uncategorized/order_total_dim.yaml",
+    "semantic-layer/dimensions/uncategorized/is_food_order.yaml",
+    "semantic-layer/dimensions/uncategorized/ordered_at.yaml",
+    "semantic-layer/dimensions/uncategorized/is_food_item.yaml",
+    "semantic-layer/dimensions/uncategorized/is_drink_item.yaml",
+    "semantic-layer/imports/manifest.json"
+  ],
+  "objects": [
+    {
+      "id": "cube:customers",
+      "kind": "cube",
+      "name": "customers",
+      "label": "customers",
+      "domain": "uncategorized",
+      "filePath": "semantic-layer/cubes/uncategorized/customers.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "semantic_model",
+        "objectId": "customers",
+        "objectName": "customers"
+      }
+    },
+    {
+      "id": "cube:orders",
+      "kind": "cube",
+      "name": "orders",
+      "label": "orders",
+      "domain": "uncategorized",
+      "filePath": "semantic-layer/cubes/uncategorized/orders.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "semantic_model",
+        "objectId": "orders",
+        "objectName": "orders"
+      }
+    },
+    {
+      "id": "cube:order_item",
+      "kind": "cube",
+      "name": "order_item",
+      "label": "order_item",
+      "domain": "uncategorized",
+      "filePath": "semantic-layer/cubes/uncategorized/order_item.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "semantic_model",
+        "objectId": "order_item",
+        "objectName": "order_item"
+      }
+    },
+    {
+      "id": "metric:count_lifetime_orders",
+      "kind": "metric",
+      "name": "count_lifetime_orders",
+      "label": "count_lifetime_orders",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/metrics/uncategorized/count_lifetime_orders.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "customers.count_lifetime_orders",
+        "objectName": "count_lifetime_orders"
+      }
+    },
+    {
+      "id": "metric:lifetime_spend_pretax",
+      "kind": "metric",
+      "name": "lifetime_spend_pretax",
+      "label": "lifetime_spend_pretax",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/metrics/uncategorized/lifetime_spend_pretax.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "customers.lifetime_spend_pretax",
+        "objectName": "lifetime_spend_pretax"
+      }
+    },
+    {
+      "id": "metric:lifetime_spend",
+      "kind": "metric",
+      "name": "lifetime_spend",
+      "label": "lifetime_spend",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/metrics/uncategorized/lifetime_spend.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "customers.lifetime_spend",
+        "objectName": "lifetime_spend"
+      }
+    },
+    {
+      "id": "metric:customers",
+      "kind": "metric",
+      "name": "customers",
+      "label": "customers",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/metrics/uncategorized/customers.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "customers",
+        "objectName": "customers"
+      }
+    },
+    {
+      "id": "metric:order_total",
+      "kind": "metric",
+      "name": "order_total",
+      "label": "order_total",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/order_total.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "order_total",
+        "objectName": "order_total"
+      }
+    },
+    {
+      "id": "metric:order_count",
+      "kind": "metric",
+      "name": "order_count",
+      "label": "order_count",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/order_count.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "orders.order_count",
+        "objectName": "order_count"
+      }
+    },
+    {
+      "id": "metric:tax_paid",
+      "kind": "metric",
+      "name": "tax_paid",
+      "label": "tax_paid",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/tax_paid.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "orders.tax_paid",
+        "objectName": "tax_paid"
+      }
+    },
+    {
+      "id": "metric:customers_with_orders",
+      "kind": "metric",
+      "name": "customers_with_orders",
+      "label": "customers_with_orders",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/metrics/uncategorized/customers_with_orders.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "customers_with_orders",
+        "objectName": "customers_with_orders"
+      }
+    },
+    {
+      "id": "metric:locations_with_orders",
+      "kind": "metric",
+      "name": "locations_with_orders",
+      "label": "locations_with_orders",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/locations_with_orders.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "locations_with_orders",
+        "objectName": "locations_with_orders"
+      }
+    },
+    {
+      "id": "metric:order_cost",
+      "kind": "metric",
+      "name": "order_cost",
+      "label": "order_cost",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/order_cost.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "orders.order_cost",
+        "objectName": "order_cost"
+      }
+    },
+    {
+      "id": "metric:order_value_p99",
+      "kind": "metric",
+      "name": "order_value_p99",
+      "label": "order_value_p99",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/order_value_p99.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "order_value_p99",
+        "objectName": "order_value_p99"
+      }
+    },
+    {
+      "id": "metric:discrete_order_value_p99",
+      "kind": "metric",
+      "name": "discrete_order_value_p99",
+      "label": "discrete_order_value_p99",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/discrete_order_value_p99.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "discrete_order_value_p99",
+        "objectName": "discrete_order_value_p99"
+      }
+    },
+    {
+      "id": "metric:food_orders",
+      "kind": "metric",
+      "name": "food_orders",
+      "label": "food_orders",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/food_orders.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "orders.food_orders",
+        "objectName": "food_orders"
+      }
+    },
+    {
+      "id": "metric:max_order_value",
+      "kind": "metric",
+      "name": "max_order_value",
+      "label": "max_order_value",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/max_order_value.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "orders.max_order_value",
+        "objectName": "max_order_value"
+      }
+    },
+    {
+      "id": "metric:min_order_value",
+      "kind": "metric",
+      "name": "min_order_value",
+      "label": "min_order_value",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/min_order_value.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "orders.min_order_value",
+        "objectName": "min_order_value"
+      }
+    },
+    {
+      "id": "metric:revenue",
+      "kind": "metric",
+      "name": "revenue",
+      "label": "revenue",
+      "domain": "uncategorized",
+      "cube": "order_item",
+      "filePath": "semantic-layer/metrics/uncategorized/revenue.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "order_item.revenue",
+        "objectName": "revenue"
+      }
+    },
+    {
+      "id": "metric:food_revenue",
+      "kind": "metric",
+      "name": "food_revenue",
+      "label": "food_revenue",
+      "domain": "uncategorized",
+      "cube": "order_item",
+      "filePath": "semantic-layer/metrics/uncategorized/food_revenue.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "order_item.food_revenue",
+        "objectName": "food_revenue"
+      }
+    },
+    {
+      "id": "metric:drink_revenue",
+      "kind": "metric",
+      "name": "drink_revenue",
+      "label": "drink_revenue",
+      "domain": "uncategorized",
+      "cube": "order_item",
+      "filePath": "semantic-layer/metrics/uncategorized/drink_revenue.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "measure",
+        "objectId": "order_item.drink_revenue",
+        "objectName": "drink_revenue"
+      }
+    },
+    {
+      "id": "metric:large_order",
+      "kind": "metric",
+      "name": "large_order",
+      "label": "Large Orders",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/large_order.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "large_order",
+        "objectName": "large_order"
+      }
+    },
+    {
+      "id": "metric:food_order_amount",
+      "kind": "metric",
+      "name": "food_order_amount",
+      "label": "food_order_amount",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/food_order_amount.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "food_order_amount",
+        "objectName": "food_order_amount"
+      }
+    },
+    {
+      "id": "metric:max_order_amount",
+      "kind": "metric",
+      "name": "max_order_amount",
+      "label": "max_order_amount",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/max_order_amount.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "max_order_amount",
+        "objectName": "max_order_amount"
+      }
+    },
+    {
+      "id": "metric:min_order_amount",
+      "kind": "metric",
+      "name": "min_order_amount",
+      "label": "min_order_amount",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/min_order_amount.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "min_order_amount",
+        "objectName": "min_order_amount"
+      }
+    },
+    {
+      "id": "metric:new_customer",
+      "kind": "metric",
+      "name": "new_customer",
+      "label": "New Customers",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/new_customer.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "new_customer",
+        "objectName": "new_customer"
+      }
+    },
+    {
+      "id": "metric:order_amount",
+      "kind": "metric",
+      "name": "order_amount",
+      "label": "order_amount",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/order_amount.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "order_amount",
+        "objectName": "order_amount"
+      }
+    },
+    {
+      "id": "metric:cumulative_order_amount",
+      "kind": "metric",
+      "name": "cumulative_order_amount",
+      "label": "cumulative_order_amount",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/cumulative_order_amount.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "cumulative_order_amount",
+        "objectName": "cumulative_order_amount"
+      }
+    },
+    {
+      "id": "metric:cumulative_order_ammount_l1m",
+      "kind": "metric",
+      "name": "cumulative_order_ammount_l1m",
+      "label": "cumulative_order_ammount_l1m",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/cumulative_order_ammount_l1m.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "cumulative_order_ammount_l1m",
+        "objectName": "cumulative_order_ammount_l1m"
+      }
+    },
+    {
+      "id": "metric:cumulative_order_amount_mtd",
+      "kind": "metric",
+      "name": "cumulative_order_amount_mtd",
+      "label": "cumulative_order_amount_mtd",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/metrics/uncategorized/cumulative_order_amount_mtd.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "metric",
+        "objectId": "cumulative_order_amount_mtd",
+        "objectName": "cumulative_order_amount_mtd"
+      }
+    },
+    {
+      "id": "dimension:customer_name",
+      "kind": "dimension",
+      "name": "customer_name",
+      "label": "customer_name",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/dimensions/uncategorized/customer_name.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "dimension",
+        "objectId": "customers.customer_name",
+        "objectName": "customer_name"
+      }
+    },
+    {
+      "id": "dimension:customer_type",
+      "kind": "dimension",
+      "name": "customer_type",
+      "label": "customer_type",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/dimensions/uncategorized/customer_type.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "dimension",
+        "objectId": "customers.customer_type",
+        "objectName": "customer_type"
+      }
+    },
+    {
+      "id": "dimension:first_ordered_at",
+      "kind": "dimension",
+      "name": "first_ordered_at",
+      "label": "first_ordered_at",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/dimensions/uncategorized/first_ordered_at.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "time_dimension",
+        "objectId": "customers.first_ordered_at",
+        "objectName": "first_ordered_at"
+      }
+    },
+    {
+      "id": "dimension:last_ordered_at",
+      "kind": "dimension",
+      "name": "last_ordered_at",
+      "label": "last_ordered_at",
+      "domain": "uncategorized",
+      "cube": "customers",
+      "filePath": "semantic-layer/dimensions/uncategorized/last_ordered_at.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "time_dimension",
+        "objectId": "customers.last_ordered_at",
+        "objectName": "last_ordered_at"
+      }
+    },
+    {
+      "id": "dimension:order_total_dim",
+      "kind": "dimension",
+      "name": "order_total_dim",
+      "label": "order_total_dim",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/dimensions/uncategorized/order_total_dim.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "dimension",
+        "objectId": "orders.order_total_dim",
+        "objectName": "order_total_dim"
+      }
+    },
+    {
+      "id": "dimension:is_food_order",
+      "kind": "dimension",
+      "name": "is_food_order",
+      "label": "is_food_order",
+      "domain": "uncategorized",
+      "cube": "orders",
+      "filePath": "semantic-layer/dimensions/uncategorized/is_food_order.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "dimension",
+        "objectId": "orders.is_food_order",
+        "objectName": "is_food_order"
+      }
+    },
+    {
+      "id": "dimension:ordered_at",
+      "kind": "dimension",
+      "name": "ordered_at",
+      "label": "ordered_at",
+      "domain": "uncategorized",
+      "cube": "order_item",
+      "filePath": "semantic-layer/dimensions/uncategorized/ordered_at.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "time_dimension",
+        "objectId": "order_item.ordered_at",
+        "objectName": "ordered_at"
+      }
+    },
+    {
+      "id": "dimension:is_food_item",
+      "kind": "dimension",
+      "name": "is_food_item",
+      "label": "is_food_item",
+      "domain": "uncategorized",
+      "cube": "order_item",
+      "filePath": "semantic-layer/dimensions/uncategorized/is_food_item.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "dimension",
+        "objectId": "order_item.is_food_item",
+        "objectName": "is_food_item"
+      }
+    },
+    {
+      "id": "dimension:is_drink_item",
+      "kind": "dimension",
+      "name": "is_drink_item",
+      "label": "is_drink_item",
+      "domain": "uncategorized",
+      "cube": "order_item",
+      "filePath": "semantic-layer/dimensions/uncategorized/is_drink_item.yaml",
+      "source": {
+        "provider": "dbt",
+        "objectType": "dimension",
+        "objectId": "order_item.is_drink_item",
+        "objectName": "is_drink_item"
+      }
+    }
+  ]
+}

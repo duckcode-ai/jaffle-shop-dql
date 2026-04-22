@@ -1,0 +1,14 @@
+name: cumulative_order_ammount_l1m
+label: cumulative_order_ammount_l1m
+description: "Trailing 1 month cumulative order amount"
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(order_total)"
+type: sum
+aggregation: cumulative
+source:
+  provider: dbt
+  objectType: metric
+  objectId: cumulative_order_ammount_l1m
+  objectName: cumulative_order_ammount_l1m

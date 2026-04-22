@@ -1,0 +1,14 @@
+name: order_total
+label: order_total
+description: "Sum of orders value"
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(order_total)"
+type: sum
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: order_total
+  objectName: order_total

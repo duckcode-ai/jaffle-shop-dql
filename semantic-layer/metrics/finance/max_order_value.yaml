@@ -1,0 +1,14 @@
+name: max_order_value
+label: max_order_value
+description: ""
+domain: finance
+table: fct_orders
+cube: orders
+sql: "MAX(order_total)"
+type: max
+aggregation: max
+source:
+  provider: dbt
+  objectType: measure
+  objectId: orders.max_order_value
+  objectName: max_order_value

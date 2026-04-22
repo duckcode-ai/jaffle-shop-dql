@@ -1,0 +1,15 @@
+{
+  "name": "jaffle-shop-dql",
+  "private": true,
+  "description": "DQL example project built on the canonical Jaffle Shop dataset",
+  "scripts": {
+    "dql:doctor": "dql doctor .",
+    "dql:validate": "dql validate .",
+    "dql:notebook": "dql notebook .",
+    "dql:compile": "dql compile .",
+    "dql:lineage": "dql lineage"
+  },
+  "dependencies": {
+    "@duckcodeailabs/dql-cli": "^1.0.4"
+  }
+}

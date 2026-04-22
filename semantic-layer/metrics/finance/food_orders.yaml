@@ -1,0 +1,14 @@
+name: food_orders
+label: food_orders
+description: ""
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(case when is_food_order then order_total else 0 end)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: orders.food_orders
+  objectName: food_orders

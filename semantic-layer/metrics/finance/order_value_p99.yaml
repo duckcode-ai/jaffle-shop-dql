@@ -1,0 +1,14 @@
+name: order_value_p99
+label: order_value_p99
+description: "The 99th percentile of each order"
+domain: finance
+table: fct_orders
+cube: orders
+sql: order_total
+type: custom
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: order_value_p99
+  objectName: order_value_p99

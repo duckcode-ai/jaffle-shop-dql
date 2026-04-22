@@ -1,0 +1,16 @@
+{
+  "project": "jaffle-shop",
+  "defaultConnection": {
+    "driver": "duckdb",
+    "filepath": "./jaffle_shop.duckdb"
+  },
+  "semanticLayer": {
+    "provider": "dql",
+    "path": "./semantic-layer"
+  },
+  "preview": {
+    "port": 3474,
+    "open": true,
+    "theme": "light"
+  }
+}

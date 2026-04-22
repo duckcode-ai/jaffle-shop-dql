@@ -1,0 +1,14 @@
+name: order_cost
+label: order_cost
+description: "The cost for each order item. Cost is calculated as a sum of the supply cost for each order item."
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(order_cost)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: orders.order_cost
+  objectName: order_cost

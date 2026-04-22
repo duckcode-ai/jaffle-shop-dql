@@ -1,0 +1,32 @@
+block "Top Products by Revenue" {
+    domain = "product"
+    type = "custom"
+    description = "Top 10 products ranked by all-time revenue, with units sold and gross margin (product_price − supply_cost) from `order_items` joined to `stg_products`. Backs the weekly product review."
+    owner = "product@jaffle.example"
+    tags = ["products", "revenue", "margin", "product-review"]
+
+    query = """
+        SELECT
+            p.product_name,
+            p.product_type,
+            COUNT(*) AS units_sold,
+            ROUND(SUM(oi.product_price), 2) AS revenue,
+            ROUND(SUM(oi.product_price - oi.supply_cost), 2) AS gross_margin
+        FROM order_items oi
+        JOIN stg_products p ON oi.product_id = p.product_id
+        GROUP BY 1, 2
+        ORDER BY revenue DESC
+        LIMIT 10
+    """
+
+    visualization {
+        chart = "bar"
+        x = product_name
+        y = revenue
+    }
+
+    tests {
+        assert row_count > 0
+        assert row_count <= 10
+    }
+}

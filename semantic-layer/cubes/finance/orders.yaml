@@ -1,0 +1,110 @@
+name: orders
+label: orders
+description: ""
+domain: finance
+table: fct_orders
+sql: "SELECT * FROM fct_orders"
+source:
+  provider: dbt
+  objectType: semantic_model
+  objectId: orders
+  objectName: orders
+measures:
+  - name: order_total
+    label: order_total
+    description: "The total amount for each order including taxes."
+    sql: "SUM(order_total)"
+    type: sum
+    aggregation: sum
+  - name: order_count
+    label: order_count
+    description: ""
+    sql: "SUM(1)"
+    type: sum
+    aggregation: sum
+  - name: tax_paid
+    label: tax_paid
+    description: "The total tax paid on each order."
+    sql: "SUM(tax_paid)"
+    type: sum
+    aggregation: sum
+  - name: customers_with_orders
+    label: customers_with_orders
+    description: "Distinct count of customers placing orders"
+    sql: "COUNT(DISTINCT customer_id)"
+    type: count_distinct
+    aggregation: count_distinct
+  - name: locations_with_orders
+    label: locations_with_orders
+    description: "Distinct count of locations with order"
+    sql: "COUNT(DISTINCT location_id)"
+    type: count_distinct
+    aggregation: count_distinct
+  - name: order_cost
+    label: order_cost
+    description: "The cost for each order item. Cost is calculated as a sum of the supply cost for each order item."
+    sql: "SUM(order_cost)"
+    type: sum
+    aggregation: sum
+  - name: order_value_p99
+    label: order_value_p99
+    description: ""
+    sql: order_total
+    type: custom
+    aggregation: percentile
+  - name: discrete_order_value_p99
+    label: discrete_order_value_p99
+    description: ""
+    sql: order_total
+    type: custom
+    aggregation: percentile
+  - name: food_orders
+    label: food_orders
+    description: ""
+    sql: "SUM(case when is_food_order then order_total else 0 end)"
+    type: sum
+    aggregation: sum
+  - name: max_order_value
+    label: max_order_value
+    description: ""
+    sql: "MAX(order_total)"
+    type: max
+    aggregation: max
+  - name: min_order_value
+    label: min_order_value
+    description: ""
+    sql: "MIN(order_total)"
+    type: min
+    aggregation: min
+dimensions:
+  - name: order_total_dim
+    label: order_total_dim
+    description: ""
+    sql: order_total
+    type: string
+  - name: is_food_order
+    label: is_food_order
+    description: ""
+    sql: is_food_order
+    type: string
+time_dimensions:
+  - name: ordered_at
+    label: ordered_at
+    description: ""
+    sql: "date_trunc('day', ordered_at)"
+    granularities:
+      - day
+      - week
+      - month
+      - quarter
+      - year
+    primary_time: true
+joins:
+  - name: location
+    right: location
+    type: left
+    sql: "${left}.location_id = ${right}.location"
+  - name: customer
+    right: customer
+    type: left
+    sql: "${left}.customer_id = ${right}.customer"

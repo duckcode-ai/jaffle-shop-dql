@@ -1,0 +1,14 @@
+name: discrete_order_value_p99
+label: discrete_order_value_p99
+description: "The 99th percentile of each order using a discrete distribution"
+domain: finance
+table: fct_orders
+cube: orders
+sql: order_total
+type: custom
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: discrete_order_value_p99
+  objectName: discrete_order_value_p99

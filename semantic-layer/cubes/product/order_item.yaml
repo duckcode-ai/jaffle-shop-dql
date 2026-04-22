@@ -1,0 +1,62 @@
+name: order_item
+label: order_item
+description: ""
+domain: product
+table: order_items
+sql: "SELECT * FROM order_items"
+source:
+  provider: dbt
+  objectType: semantic_model
+  objectId: order_item
+  objectName: order_item
+measures:
+  - name: revenue
+    label: revenue
+    description: "The revenue generated for each order item. Revenue is calculated as a sum of revenue associated with each product in an order."
+    sql: "SUM(product_price)"
+    type: sum
+    aggregation: sum
+  - name: food_revenue
+    label: food_revenue
+    description: "The revenue generated for each order item. Revenue is calculated as a sum of revenue associated with each product in an order."
+    sql: "SUM(case when is_food_item = 1 then product_price else 0 end)"
+    type: sum
+    aggregation: sum
+  - name: drink_revenue
+    label: drink_revenue
+    description: "The revenue generated for each order item. Revenue is calculated as a sum of revenue associated with each product in an order."
+    sql: "SUM(case when is_drink_item = 1 then product_price else 0 end)"
+    type: sum
+    aggregation: sum
+dimensions:
+  - name: is_food_item
+    label: is_food_item
+    description: ""
+    sql: is_food_item
+    type: string
+  - name: is_drink_item
+    label: is_drink_item
+    description: ""
+    sql: is_drink_item
+    type: string
+time_dimensions:
+  - name: ordered_at
+    label: ordered_at
+    description: ""
+    sql: "date_trunc('day', ordered_at)"
+    granularities:
+      - day
+      - week
+      - month
+      - quarter
+      - year
+    primary_time: true
+joins:
+  - name: order_id
+    right: order_id
+    type: left
+    sql: "${left}.order_id = ${right}.order_id"
+  - name: product
+    right: product
+    type: left
+    sql: "${left}.product_id = ${right}.product"

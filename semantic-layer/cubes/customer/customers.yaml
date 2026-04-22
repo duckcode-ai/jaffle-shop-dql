@@ -1,0 +1,69 @@
+name: customers
+label: customers
+description: ""
+domain: customer
+table: dim_customers
+sql: "SELECT * FROM dim_customers"
+source:
+  provider: dbt
+  objectType: semantic_model
+  objectId: customers
+  objectName: customers
+measures:
+  - name: count_lifetime_orders
+    label: count_lifetime_orders
+    description: "Total count of orders per customer."
+    sql: "SUM(count_lifetime_orders)"
+    type: sum
+    aggregation: sum
+  - name: lifetime_spend_pretax
+    label: lifetime_spend_pretax
+    description: "Customer lifetime spend before taxes."
+    sql: "SUM(lifetime_spend_pretax)"
+    type: sum
+    aggregation: sum
+  - name: lifetime_spend
+    label: lifetime_spend
+    description: "Gross customer lifetime spend inclusive of taxes."
+    sql: "SUM(lifetime_spend)"
+    type: sum
+    aggregation: sum
+  - name: customers
+    label: customers
+    description: ""
+    sql: "COUNT(DISTINCT customer_id)"
+    type: count_distinct
+    aggregation: count_distinct
+dimensions:
+  - name: customer_name
+    label: customer_name
+    description: ""
+    sql: customer_name
+    type: string
+  - name: customer_type
+    label: customer_type
+    description: ""
+    sql: customer_type
+    type: string
+time_dimensions:
+  - name: first_ordered_at
+    label: first_ordered_at
+    description: ""
+    sql: first_ordered_at
+    granularities:
+      - day
+      - week
+      - month
+      - quarter
+      - year
+    primary_time: true
+  - name: last_ordered_at
+    label: last_ordered_at
+    description: ""
+    sql: last_ordered_at
+    granularities:
+      - day
+      - week
+      - month
+      - quarter
+      - year

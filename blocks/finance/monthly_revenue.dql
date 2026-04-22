@@ -1,0 +1,27 @@
+block "Monthly Revenue" {
+    domain = "finance"
+    type = "custom"
+    description = "Monthly order count and gross revenue from the dbt fact table `fct_orders`. Backs the monthly business review dashboard owned by finance."
+    owner = "finance@jaffle.example"
+    tags = ["orders", "revenue", "monthly", "finance-mbr"]
+
+    query = """
+        SELECT
+            DATE_TRUNC('month', ordered_at) AS order_month,
+            COUNT(*) AS order_count,
+            ROUND(SUM(order_total), 2) AS revenue
+        FROM fct_orders
+        GROUP BY 1
+        ORDER BY 1
+    """
+
+    visualization {
+        chart = "bar"
+        x = order_month
+        y = revenue
+    }
+
+    tests {
+        assert row_count > 0
+    }
+}

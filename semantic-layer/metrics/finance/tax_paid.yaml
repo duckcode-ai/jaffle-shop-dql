@@ -1,0 +1,14 @@
+name: tax_paid
+label: tax_paid
+description: "The total tax paid on each order."
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(tax_paid)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: orders.tax_paid
+  objectName: tax_paid

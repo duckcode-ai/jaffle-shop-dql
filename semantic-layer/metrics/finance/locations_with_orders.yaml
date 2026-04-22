@@ -1,0 +1,14 @@
+name: locations_with_orders
+label: locations_with_orders
+description: "The number of locations that have orders."
+domain: finance
+table: fct_orders
+cube: orders
+sql: "COUNT(DISTINCT location_id)"
+type: count_distinct
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: locations_with_orders
+  objectName: locations_with_orders

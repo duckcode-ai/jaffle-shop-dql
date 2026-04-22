@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "title": "Customer Cohorts",
+  "metadata": {
+    "status": "in_review",
+    "description": "Who are our returning customers? Break dim_customers into first-order cohorts, inspect size, spend, and returning-rate by segment.",
+    "categories": ["customer", "growth", "cohorts"],
+    "owner": "growth@jaffle.example"
+  },
+  "cells": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "name": "intro",
+      "content": "# Customer Cohorts\n\n**Audience** — growth, lifecycle marketing\n**Source** — `dim_customers` (dbt mart)\n**Scope** — every customer who has placed at least one order, bucketed by the month of their first order.\n\n**Questions this notebook answers**\n\n1. How large is each cohort, split by `customer_type` (new vs returning)?\n2. What's the average lifetime order count and spend per cohort?\n3. Which cohorts have a returning-customer rate above the 60% target?"
+    },
+    {
+      "id": "cohort-base",
+      "type": "sql",
+      "name": "cohort_base",
+      "content": "-- One row per (cohort_month, customer_type).\n-- cohort_month  = month of the customer's first order\n-- customer_type = dbt's 'new' | 'returning' classification\n-- pct_returning = share of the cohort that came back for >1 order.\nSELECT\n  DATE_TRUNC('month', first_ordered_at)              AS cohort_month,\n  customer_type,\n  COUNT(*)                                           AS cohort_size,\n  ROUND(AVG(count_lifetime_orders), 2)               AS avg_orders,\n  ROUND(AVG(lifetime_spend), 2)                      AS avg_lifetime_spend,\n  ROUND(\n    SUM(CASE WHEN count_lifetime_orders > 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*),\n    1\n  )                                                  AS pct_returning\nFROM dim_customers\nGROUP BY 1, 2\nORDER BY 1, 2;"
+    },
+    {
+      "id": "kpi-customers",
+      "type": "single_value",
+      "name": "kpi_total_customers",
+      "content": "",
+      "upstream": "cohort_base",
+      "singleValueConfig": {
+        "upstream": "cohort_base",
+        "metric": "cohort_size",
+        "aggregation": "sum",
+        "format": "number",
+        "label": "Total customers"
+      }
+    },
+    {
+      "id": "kpi-lifetime-spend",
+      "type": "single_value",
+      "name": "kpi_avg_lifetime_spend",
+      "content": "",
+      "upstream": "cohort_base",
+      "singleValueConfig": {
+        "upstream": "cohort_base",
+        "metric": "avg_lifetime_spend",
+        "aggregation": "avg",
+        "format": "currency",
+        "label": "Avg lifetime spend per cohort"
+      }
+    },
+    {
+      "id": "chart-cohort-size",
+      "type": "chart",
+      "name": "chart_cohort_size",
+      "content": "",
+      "upstream": "cohort_base",
+      "chartConfig": {
+        "chart": "bar",
+        "x": "cohort_month",
+        "y": "cohort_size",
+        "title": "Cohort size by month"
+      }
+    },
+    {
+      "id": "section-pivot",
+      "type": "markdown",
+      "name": "section_pivot",
+      "content": "## New vs returning, by cohort month\n\nThe pivot lays cohort months down the rows and customer types across the columns — the easiest way to see the new/returning ratio drift over time."
+    },
+    {
+      "id": "pivot-cohort",
+      "type": "pivot",
+      "name": "pivot_cohort",
+      "content": "",
+      "upstream": "cohort_base",
+      "pivotConfig": {
+        "upstream": "cohort_base",
+        "rows": ["cohort_month"],
+        "columns": ["customer_type"],
+        "values": [{ "column": "cohort_size", "aggregation": "sum" }]
+      }
+    },
+    {
+      "id": "section-hero",
+      "type": "markdown",
+      "name": "section_hero",
+      "content": "## Hero cohorts\n\nFilter keeps cohorts that beat the **60% returning** bar. Growth uses this list for testimonials + referral asks."
+    },
+    {
+      "id": "filter-hero",
+      "type": "filter",
+      "name": "filter_hero_cohorts",
+      "content": "",
+      "upstream": "cohort_base",
+      "filterConfig": {
+        "upstream": "cohort_base",
+        "mode": "keep",
+        "groups": [
+          {
+            "id": "g1",
+            "combinator": "and",
+            "rules": [
+              { "id": "r1", "column": "pct_returning", "operation": "gte", "value": "60" },
+              { "id": "r2", "column": "cohort_size",  "operation": "gte", "value": "50" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "table-hero",
+      "type": "table",
+      "name": "table_hero_cohorts",
+      "content": "",
+      "upstream": "cohort_base",
+      "tableConfig": {
+        "upstream": "cohort_base",
+        "visibleColumns": ["cohort_month", "customer_type", "cohort_size", "pct_returning", "avg_lifetime_spend"]
+      }
+    },
+    {
+      "id": "section-block",
+      "type": "markdown",
+      "name": "section_block",
+      "content": "## Certified block: Customer Segments\n\nCross-reference with the certified `customer_segments` block — stable definition growth uses in weekly standup."
+    },
+    {
+      "id": "block-segments",
+      "type": "sql",
+      "name": "customer_segments_block",
+      "content": "SELECT\n    customer_type,\n    COUNT(*) AS customers,\n    ROUND(AVG(count_lifetime_orders), 2) AS avg_lifetime_orders,\n    ROUND(AVG(lifetime_spend), 2) AS avg_lifetime_spend\nFROM dim_customers\nGROUP BY 1\nORDER BY customers DESC",
+      "blockBinding": {
+        "path": "blocks/customer/customer_segments.dql",
+        "state": "bound",
+        "originalContent": "SELECT\n    customer_type,\n    COUNT(*) AS customers,\n    ROUND(AVG(count_lifetime_orders), 2) AS avg_lifetime_orders,\n    ROUND(AVG(lifetime_spend), 2) AS avg_lifetime_spend\nFROM dim_customers\nGROUP BY 1\nORDER BY customers DESC"
+      }
+    },
+    {
+      "id": "outro",
+      "type": "markdown",
+      "name": "outro",
+      "content": "## Next steps\n\n- Promote `cohort_base` to a certified block once the definition is stable (**Save as Block** → `blocks/customer/cohort_base.dql`).\n- Layer in a retention-by-month-since-signup block for a proper triangle chart.\n- Pipe `pct_returning` into the lifecycle email trigger config."
+    }
+  ]
+}

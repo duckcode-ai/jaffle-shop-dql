@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "title": "Monthly Revenue Review",
+  "metadata": {
+    "status": "certified",
+    "description": "Finance monthly business review: gross revenue, gross profit, food vs drink mix, and months that underperformed the target.",
+    "categories": ["finance", "mbr", "revenue"],
+    "owner": "finance@jaffle.example"
+  },
+  "cells": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "name": "intro",
+      "content": "# Monthly Revenue Review\n\n**Audience** — finance leads, business partners\n**Cadence** — first Monday of the month\n**Source** — `fct_orders` (dbt mart) + `blocks/finance/monthly_revenue.dql`\n\nThis notebook answers three recurring questions in one scroll:\n\n1. How much revenue did we book last month, and cumulatively?\n2. Is the food vs. drink mix shifting?\n3. Which months came in under the $50k revenue floor?\n\nEvery cell below runs off the same upstream SQL query (`revenue_monthly`), so if the underlying fact table is refreshed the whole notebook updates on *Run all*."
+    },
+    {
+      "id": "revenue-monthly",
+      "type": "sql",
+      "name": "revenue_monthly",
+      "content": "-- Monthly revenue, profit and food/drink split. This dataframe feeds every\n-- downstream cell (KPI, chart, pivot, filter) so there is one source of truth.\nSELECT\n  DATE_TRUNC('month', ordered_at)                                          AS ordered_month,\n  COUNT(*)                                                                 AS orders,\n  ROUND(SUM(order_total), 2)                                               AS gross_revenue,\n  ROUND(SUM(order_total - order_cost), 2)                                  AS gross_profit,\n  ROUND(SUM(CASE WHEN is_food_order  THEN order_total ELSE 0 END), 2)      AS food_revenue,\n  ROUND(SUM(CASE WHEN is_drink_order THEN order_total ELSE 0 END), 2)      AS drink_revenue\nFROM fct_orders\nGROUP BY 1\nORDER BY 1;"
+    },
+    {
+      "id": "kpi-gross-revenue",
+      "type": "single_value",
+      "name": "kpi_gross_revenue",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "singleValueConfig": {
+        "upstream": "revenue_monthly",
+        "metric": "gross_revenue",
+        "aggregation": "sum",
+        "format": "currency",
+        "label": "Gross revenue (all months)"
+      }
+    },
+    {
+      "id": "kpi-gross-profit",
+      "type": "single_value",
+      "name": "kpi_gross_profit",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "singleValueConfig": {
+        "upstream": "revenue_monthly",
+        "metric": "gross_profit",
+        "aggregation": "sum",
+        "format": "currency",
+        "label": "Gross profit (all months)"
+      }
+    },
+    {
+      "id": "chart-revenue-monthly",
+      "type": "chart",
+      "name": "chart_revenue_monthly",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "chartConfig": {
+        "chart": "bar",
+        "x": "ordered_month",
+        "y": "gross_revenue",
+        "title": "Gross revenue by month"
+      }
+    },
+    {
+      "id": "section-mix",
+      "type": "markdown",
+      "name": "section_mix",
+      "content": "## Food vs. drink mix\n\nLong-running theory: drinks drive volume, jaffles drive margin. Split the same monthly aggregate two ways to check."
+    },
+    {
+      "id": "chart-mix",
+      "type": "chart",
+      "name": "chart_food_vs_drink",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "chartConfig": {
+        "chart": "line",
+        "x": "ordered_month",
+        "y": "food_revenue",
+        "title": "Food vs drink revenue"
+      }
+    },
+    {
+      "id": "section-under",
+      "type": "markdown",
+      "name": "section_under",
+      "content": "## Months under target\n\nOur internal floor is **$50,000 in gross revenue per month**. The filter below keeps only the months that missed — these are the ones finance follows up on with ops."
+    },
+    {
+      "id": "filter-under",
+      "type": "filter",
+      "name": "months_under_target",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "filterConfig": {
+        "upstream": "revenue_monthly",
+        "mode": "keep",
+        "groups": [
+          {
+            "id": "g1",
+            "combinator": "and",
+            "rules": [
+              { "id": "r1", "column": "gross_revenue", "operation": "lt", "value": "50000" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "table-under",
+      "type": "table",
+      "name": "table_under_target",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "tableConfig": {
+        "upstream": "revenue_monthly",
+        "visibleColumns": ["ordered_month", "orders", "gross_revenue", "gross_profit"]
+      }
+    },
+    {
+      "id": "section-block",
+      "type": "markdown",
+      "name": "section_block",
+      "content": "## Certified block: Monthly Revenue\n\nThe cell below is a **bound block** (lock icon, green band) — its SQL lives in version control at `blocks/finance/monthly_revenue.dql` and is guarded by the `row_count > 0` assertion. Edit the file on disk, reload, and this cell picks up the change."
+    },
+    {
+      "id": "block-monthly-revenue",
+      "type": "sql",
+      "name": "monthly_revenue_block",
+      "content": "SELECT\n    DATE_TRUNC('month', ordered_at) AS order_month,\n    COUNT(*) AS order_count,\n    ROUND(SUM(order_total), 2) AS revenue\nFROM fct_orders\nGROUP BY 1\nORDER BY 1",
+      "blockBinding": {
+        "path": "blocks/finance/monthly_revenue.dql",
+        "state": "bound",
+        "originalContent": "SELECT\n    DATE_TRUNC('month', ordered_at) AS order_month,\n    COUNT(*) AS order_count,\n    ROUND(SUM(order_total), 2) AS revenue\nFROM fct_orders\nGROUP BY 1\nORDER BY 1"
+      }
+    },
+    {
+      "id": "outro",
+      "type": "markdown",
+      "name": "outro",
+      "content": "## Follow-ups\n\n- Any month flagged in the filter goes to `#finance-followups` with the ops partner tagged\n- Food vs drink mix — if the gap narrows two months running, revisit pricing\n- Propose new blocks for gross-margin-by-channel and refund rate next iteration"
+    }
+  ]
+}

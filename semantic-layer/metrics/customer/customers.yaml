@@ -1,0 +1,14 @@
+name: customers
+label: customers
+description: "Count of customers"
+domain: customer
+table: dim_customers
+cube: customers
+sql: "COUNT(DISTINCT customer_id)"
+type: count_distinct
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: customers
+  objectName: customers

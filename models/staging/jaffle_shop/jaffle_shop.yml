@@ -1,0 +1,84 @@
+kind: source
+name: jaffle_shop
+database: jaffle_shop
+schema: jaffle_raw
+tables:
+- name: customers
+  identifier: raw_customers
+  freshness:
+    warn_after:
+      count: null
+      period: null
+    error_after:
+      count: null
+      period: null
+    filter: null
+  meta:
+    datalex:
+      dbt:
+        unique_id: source.jaffle_shop.jaffle_shop.customers
+- name: orders
+  identifier: raw_orders
+  freshness:
+    warn_after:
+      count: null
+      period: null
+    error_after:
+      count: null
+      period: null
+    filter: null
+  meta:
+    datalex:
+      dbt:
+        unique_id: source.jaffle_shop.jaffle_shop.orders
+- name: items
+  identifier: raw_items
+  freshness:
+    warn_after:
+      count: null
+      period: null
+    error_after:
+      count: null
+      period: null
+    filter: null
+  meta:
+    datalex:
+      dbt:
+        unique_id: source.jaffle_shop.jaffle_shop.items
+- name: products
+  identifier: raw_products
+  freshness:
+    warn_after:
+      count: null
+      period: null
+    error_after:
+      count: null
+      period: null
+    filter: null
+  meta:
+    datalex:
+      dbt:
+        unique_id: source.jaffle_shop.jaffle_shop.products
+- name: supplies
+  identifier: raw_supplies
+  freshness:
+    warn_after:
+      count: null
+      period: null
+    error_after:
+      count: null
+      period: null
+    filter: null
+  meta:
+    datalex:
+      dbt:
+        unique_id: source.jaffle_shop.jaffle_shop.supplies
+meta:
+  datalex:
+    dbt:
+      unique_ids:
+      - source.jaffle_shop.jaffle_shop.customers
+      - source.jaffle_shop.jaffle_shop.items
+      - source.jaffle_shop.jaffle_shop.orders
+      - source.jaffle_shop.jaffle_shop.products
+      - source.jaffle_shop.jaffle_shop.supplies

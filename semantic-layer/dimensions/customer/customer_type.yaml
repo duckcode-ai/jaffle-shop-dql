@@ -1,0 +1,13 @@
+name: customer_type
+label: customer_type
+description: ""
+domain: customer
+table: dim_customers
+cube: customers
+sql: customer_type
+type: string
+source:
+  provider: dbt
+  objectType: dimension
+  objectId: customers.customer_type
+  objectName: customer_type

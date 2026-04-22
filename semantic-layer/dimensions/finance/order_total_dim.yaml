@@ -1,0 +1,13 @@
+name: order_total_dim
+label: order_total_dim
+description: ""
+domain: finance
+table: fct_orders
+cube: orders
+sql: order_total
+type: string
+source:
+  provider: dbt
+  objectType: dimension
+  objectId: orders.order_total_dim
+  objectName: order_total_dim

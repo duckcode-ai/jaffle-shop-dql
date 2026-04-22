@@ -1,0 +1,14 @@
+name: cumulative_order_amount
+label: cumulative_order_amount
+description: "The cumulative value of all orders"
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(order_total)"
+type: sum
+aggregation: cumulative
+source:
+  provider: dbt
+  objectType: metric
+  objectId: cumulative_order_amount
+  objectName: cumulative_order_amount

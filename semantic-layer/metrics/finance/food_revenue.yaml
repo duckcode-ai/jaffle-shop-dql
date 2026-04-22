@@ -1,0 +1,14 @@
+name: food_revenue
+label: food_revenue
+description: "The revenue generated for each order item. Revenue is calculated as a sum of revenue associated with each product in an order."
+domain: finance
+table: order_items
+cube: order_item
+sql: "SUM(case when is_food_item = 1 then product_price else 0 end)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: order_item.food_revenue
+  objectName: food_revenue

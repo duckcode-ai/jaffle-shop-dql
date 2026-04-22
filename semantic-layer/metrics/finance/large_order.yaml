@@ -1,0 +1,14 @@
+name: large_order
+label: "Large Orders"
+description: "Count of orders with order total over 20."
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(1)"
+type: sum
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: large_order
+  objectName: large_order

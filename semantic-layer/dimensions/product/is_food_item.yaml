@@ -1,0 +1,13 @@
+name: is_food_item
+label: is_food_item
+description: ""
+domain: product
+table: order_items
+cube: order_item
+sql: is_food_item
+type: string
+source:
+  provider: dbt
+  objectType: dimension
+  objectId: order_item.is_food_item
+  objectName: is_food_item

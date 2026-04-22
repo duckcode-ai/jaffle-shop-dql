@@ -1,0 +1,14 @@
+name: min_order_amount
+label: min_order_amount
+description: "The lowest order value for a given period"
+domain: finance
+table: fct_orders
+cube: orders
+sql: "MIN(order_total)"
+type: min
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: min_order_amount
+  objectName: min_order_amount

@@ -1,0 +1,13 @@
+name: first_ordered_at
+label: first_ordered_at
+description: ""
+domain: customer
+table: dim_customers
+cube: customers
+sql: first_ordered_at
+type: date
+source:
+  provider: dbt
+  objectType: time_dimension
+  objectId: customers.first_ordered_at
+  objectName: first_ordered_at

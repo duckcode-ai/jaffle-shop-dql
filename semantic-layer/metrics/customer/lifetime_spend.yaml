@@ -1,0 +1,14 @@
+name: lifetime_spend
+label: lifetime_spend
+description: "Gross customer lifetime spend inclusive of taxes."
+domain: customer
+table: dim_customers
+cube: customers
+sql: "SUM(lifetime_spend)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: customers.lifetime_spend
+  objectName: lifetime_spend

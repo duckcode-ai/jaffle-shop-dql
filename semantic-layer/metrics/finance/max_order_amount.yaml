@@ -1,0 +1,14 @@
+name: max_order_amount
+label: max_order_amount
+description: "The highest order value for a given period"
+domain: finance
+table: fct_orders
+cube: orders
+sql: "MAX(order_total)"
+type: max
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: max_order_amount
+  objectName: max_order_amount

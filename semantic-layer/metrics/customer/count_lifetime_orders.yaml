@@ -1,0 +1,14 @@
+name: count_lifetime_orders
+label: count_lifetime_orders
+description: "Total count of orders per customer."
+domain: customer
+table: dim_customers
+cube: customers
+sql: "SUM(count_lifetime_orders)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: customers.count_lifetime_orders
+  objectName: count_lifetime_orders

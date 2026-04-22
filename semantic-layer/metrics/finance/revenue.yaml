@@ -1,0 +1,14 @@
+name: revenue
+label: revenue
+description: "The revenue generated for each order item. Revenue is calculated as a sum of revenue associated with each product in an order."
+domain: finance
+table: order_items
+cube: order_item
+sql: "SUM(product_price)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: order_item.revenue
+  objectName: revenue

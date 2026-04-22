@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: metricflow_time_spine
+    description: Daily time spine used by MetricFlow-compatible semantic metrics.
+    columns:
+      - name: date_day
+        description: Calendar day used as the MetricFlow standard granularity column.
+        granularity: day
+    time_spine:
+      standard_granularity_column: date_day

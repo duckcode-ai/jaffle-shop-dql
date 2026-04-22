@@ -1,0 +1,14 @@
+name: food_order_amount
+label: food_order_amount
+description: "Sum order amount for food orders."
+domain: finance
+table: fct_orders
+cube: orders
+sql: "SUM(case when is_food_order then order_total else 0 end)"
+type: sum
+aggregation: simple
+source:
+  provider: dbt
+  objectType: metric
+  objectId: food_order_amount
+  objectName: food_order_amount

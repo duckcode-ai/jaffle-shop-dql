@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "title": "Product Performance",
+  "metadata": {
+    "status": "in_review",
+    "description": "Which products drive revenue and margin? Top 10, category breakdown, and a filter for above-average margin products.",
+    "categories": ["product", "revenue", "margin"],
+    "owner": "product@jaffle.example"
+  },
+  "cells": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "name": "intro",
+      "content": "# Product Performance\n\n**Audience** — product, merchandising, finance\n**Source** — `order_items` joined to `stg_products`\n**Cadence** — weekly product review\n\n**What you'll see**\n\n1. The top-10 products by revenue — visualized and bound to the certified block\n2. Revenue split by `product_type` (jaffle vs beverage vs extra)\n3. A filtered view of products whose gross margin beats 80%\n\n**Margin formula** — `SUM(product_price − supply_cost) / SUM(product_price)` over the lifetime of each product.\n"
+    },
+    {
+      "id": "product-core",
+      "type": "sql",
+      "name": "product_core",
+      "content": "-- Per-product revenue and margin at lifetime grain. This dataframe feeds\n-- the chart, pivot, and filter below.\nSELECT\n  p.product_name,\n  p.product_type,\n  COUNT(*)                                                                       AS units_sold,\n  ROUND(SUM(oi.product_price), 2)                                                AS revenue,\n  ROUND(SUM(oi.product_price - oi.supply_cost), 2)                               AS gross_margin,\n  ROUND(SUM(oi.product_price - oi.supply_cost) * 100.0\n        / NULLIF(SUM(oi.product_price), 0), 1)                                   AS margin_pct\nFROM order_items oi\nJOIN stg_products p ON oi.product_id = p.product_id\nGROUP BY 1, 2\nORDER BY revenue DESC;"
+    },
+    {
+      "id": "kpi-revenue",
+      "type": "single_value",
+      "name": "kpi_total_revenue",
+      "content": "",
+      "upstream": "product_core",
+      "singleValueConfig": {
+        "upstream": "product_core",
+        "metric": "revenue",
+        "aggregation": "sum",
+        "format": "currency",
+        "label": "Total product revenue"
+      }
+    },
+    {
+      "id": "kpi-margin",
+      "type": "single_value",
+      "name": "kpi_avg_margin",
+      "content": "",
+      "upstream": "product_core",
+      "singleValueConfig": {
+        "upstream": "product_core",
+        "metric": "margin_pct",
+        "aggregation": "avg",
+        "format": "percent",
+        "label": "Avg margin %"
+      }
+    },
+    {
+      "id": "chart-revenue",
+      "type": "chart",
+      "name": "chart_revenue_by_product",
+      "content": "",
+      "upstream": "product_core",
+      "chartConfig": {
+        "chart": "bar",
+        "x": "product_name",
+        "y": "revenue",
+        "title": "Revenue by product"
+      }
+    },
+    {
+      "id": "section-type",
+      "type": "markdown",
+      "name": "section_type",
+      "content": "## By product type\n\nThe pivot rolls the same base up to `product_type` to answer *\"beverage vs jaffle — who pays the rent?\"*"
+    },
+    {
+      "id": "pivot-type",
+      "type": "pivot",
+      "name": "pivot_type",
+      "content": "",
+      "upstream": "product_core",
+      "pivotConfig": {
+        "upstream": "product_core",
+        "rows": ["product_type"],
+        "values": [
+          { "column": "revenue",      "aggregation": "sum" },
+          { "column": "gross_margin", "aggregation": "sum" },
+          { "column": "units_sold",   "aggregation": "sum" }
+        ]
+      }
+    },
+    {
+      "id": "section-high-margin",
+      "type": "markdown",
+      "name": "section_high_margin",
+      "content": "## High-margin products\n\nKeep products with **margin % ≥ 80** — these are the ones merchandising promotes in the cafe windows and the app banner."
+    },
+    {
+      "id": "filter-high-margin",
+      "type": "filter",
+      "name": "filter_high_margin",
+      "content": "",
+      "upstream": "product_core",
+      "filterConfig": {
+        "upstream": "product_core",
+        "mode": "keep",
+        "groups": [
+          {
+            "id": "g1",
+            "combinator": "and",
+            "rules": [
+              { "id": "r1", "column": "margin_pct", "operation": "gte", "value": "80" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "table-high-margin",
+      "type": "table",
+      "name": "table_high_margin",
+      "content": "",
+      "upstream": "product_core",
+      "tableConfig": {
+        "upstream": "product_core",
+        "visibleColumns": ["product_name", "product_type", "units_sold", "revenue", "margin_pct"]
+      }
+    },
+    {
+      "id": "section-block",
+      "type": "markdown",
+      "name": "section_block",
+      "content": "## Certified block: Top Products\n\nThe certified `top_products` block is the definition the weekly product review slides pull from — bound below so edits stay in sync with `blocks/product/top_products.dql`."
+    },
+    {
+      "id": "block-top-products",
+      "type": "sql",
+      "name": "top_products_block",
+      "content": "SELECT\n    p.product_name,\n    p.product_type,\n    COUNT(*) AS units_sold,\n    ROUND(SUM(oi.product_price), 2) AS revenue,\n    ROUND(SUM(oi.product_price - oi.supply_cost), 2) AS gross_margin\nFROM order_items oi\nJOIN stg_products p ON oi.product_id = p.product_id\nGROUP BY 1, 2\nORDER BY revenue DESC\nLIMIT 10",
+      "blockBinding": {
+        "path": "blocks/product/top_products.dql",
+        "state": "bound",
+        "originalContent": "SELECT\n    p.product_name,\n    p.product_type,\n    COUNT(*) AS units_sold,\n    ROUND(SUM(oi.product_price), 2) AS revenue,\n    ROUND(SUM(oi.product_price - oi.supply_cost), 2) AS gross_margin\nFROM order_items oi\nJOIN stg_products p ON oi.product_id = p.product_id\nGROUP BY 1, 2\nORDER BY revenue DESC\nLIMIT 10"
+      }
+    },
+    {
+      "id": "outro",
+      "type": "markdown",
+      "name": "outro",
+      "content": "## Follow-ups\n\n- Promote `product_core` to a block under `blocks/product/` for reuse\n- Add a `price_elasticity` block once we have at least one price test in production\n- Cross-reference with `customer_cohorts.dqlnb` to see which cohorts over-index on high-margin SKUs"
+    }
+  ]
+}

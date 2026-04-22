@@ -1,0 +1,14 @@
+name: lifetime_spend_pretax
+label: lifetime_spend_pretax
+description: "Customer lifetime spend before taxes."
+domain: customer
+table: dim_customers
+cube: customers
+sql: "SUM(lifetime_spend_pretax)"
+type: sum
+aggregation: sum
+source:
+  provider: dbt
+  objectType: measure
+  objectId: customers.lifetime_spend_pretax
+  objectName: lifetime_spend_pretax

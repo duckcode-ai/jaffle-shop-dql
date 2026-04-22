@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "title": "Welcome to jaffle-shop",
+  "metadata": {
+    "status": "certified",
+    "description": "7-cell tour of DQL: SQL, visual cells (chart, KPI), and certified blocks — all running on the locally-built DuckDB.",
+    "categories": ["tour", "getting-started"],
+    "owner": "data-team@jaffle.example"
+  },
+  "cells": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "name": "Welcome",
+      "content": "# Welcome to the Jaffle Shop\n\nThis notebook is a 5-minute tour of DQL running on the Jaffle Shop sample warehouse.\n\n**What you're looking at**\n- A DuckDB file at `./jaffle_shop.duckdb` built by `dbt build --profiles-dir .`\n- The dbt project in `models/` is the semantic source of truth — metrics and dimensions come from there\n- Certified DQL blocks live under `blocks/<domain>/` and are referenced from notebooks like this one\n\n**Where to look next**\n- `notebooks/revenue_review.dqlnb` — finance monthly business review\n- `notebooks/customer_cohorts.dqlnb` — cohort retention analysis\n- `notebooks/product_performance.dqlnb` — top products + margin"
+    },
+    {
+      "id": "sql-tables",
+      "type": "sql",
+      "name": "available_tables",
+      "content": "-- The dbt marts and staging models available in this DuckDB\nSHOW TABLES;"
+    },
+    {
+      "id": "sql-orders-core",
+      "type": "sql",
+      "name": "orders_core",
+      "content": "-- Orders aggregated to monthly grain — named `orders_core` so downstream\n-- cells below can pick it up as an upstream dataframe.\nSELECT\n  DATE_TRUNC('month', ordered_at) AS ordered_month,\n  COUNT(*)                       AS orders,\n  ROUND(SUM(order_total), 2)     AS gross_revenue,\n  ROUND(SUM(order_cost), 2)      AS fulfillment_cost\nFROM fct_orders\nGROUP BY 1\nORDER BY 1;"
+    },
+    {
+      "id": "kpi-revenue",
+      "type": "single_value",
+      "name": "total_revenue_kpi",
+      "content": "",
+      "upstream": "orders_core",
+      "singleValueConfig": {
+        "upstream": "orders_core",
+        "metric": "gross_revenue",
+        "aggregation": "sum",
+        "format": "currency",
+        "label": "Total gross revenue"
+      }
+    },
+    {
+      "id": "chart-revenue",
+      "type": "chart",
+      "name": "monthly_revenue_chart",
+      "content": "",
+      "upstream": "orders_core",
+      "chartConfig": {
+        "chart": "bar",
+        "x": "ordered_month",
+        "y": "gross_revenue",
+        "title": "Gross revenue by month"
+      }
+    },
+    {
+      "id": "block-segments",
+      "type": "sql",
+      "name": "customer_segments",
+      "content": "SELECT\n    customer_type,\n    COUNT(*) AS customers,\n    ROUND(AVG(count_lifetime_orders), 2) AS avg_lifetime_orders,\n    ROUND(AVG(lifetime_spend), 2) AS avg_lifetime_spend\nFROM dim_customers\nGROUP BY 1\nORDER BY customers DESC",
+      "blockBinding": {
+        "path": "blocks/customer/customer_segments.dql",
+        "state": "bound",
+        "originalContent": "SELECT\n    customer_type,\n    COUNT(*) AS customers,\n    ROUND(AVG(count_lifetime_orders), 2) AS avg_lifetime_orders,\n    ROUND(AVG(lifetime_spend), 2) AS avg_lifetime_spend\nFROM dim_customers\nGROUP BY 1\nORDER BY customers DESC"
+      }
+    },
+    {
+      "id": "next-steps",
+      "type": "markdown",
+      "name": "next_steps",
+      "content": "## Next steps\n\n1. **Doctor** — `npm run dql:doctor` verifies the DuckDB connection and dbt-backed semantic layer.\n2. **Lineage** — open the Lineage panel (left rail) to see how `fct_orders` feeds the bound blocks above.\n3. **Browse blocks** — `blocks/finance/monthly_revenue.dql`, `blocks/customer/customer_segments.dql`, `blocks/product/top_products.dql`.\n4. **Make your own** — right-click any SQL cell → *Save as Block* to promote it into `blocks/<domain>/` with owner + tests.\n5. **Compile** — `npm run dql:compile` emits runnable artifacts; `npm run dql:lineage` prints the project graph."
+    }
+  ]
+}
