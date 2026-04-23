@@ -23,7 +23,8 @@ plugins:
     - name: tap-jaffle-shop
       namespace: tap_jaffle_shop
       variant: meltanolabs
-      pip_url: git+https://github.com/MeltanoLabs/tap-jaffle-shop.git@v0.3.0
+      python: "3.11"
+      pip_url: "setuptools<82 git+https://github.com/MeltanoLabs/tap-jaffle-shop.git@v0.3.0"
       capabilities:
         - catalog
         - discover
