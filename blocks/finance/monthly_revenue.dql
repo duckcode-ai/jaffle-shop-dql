@@ -4,6 +4,18 @@ block "Monthly Revenue" {
     description = "Monthly order count and gross revenue from the dbt fact table `fct_orders`. Backs the monthly business review dashboard owned by finance."
     owner = "finance@jaffle.example"
     tags = ["orders", "revenue", "monthly", "finance-mbr"]
+    llmContext = "Monthly gross revenue recognized from closed orders in fct_orders, aggregated by calendar month. Use this block when a question asks about month-over-month revenue trends, monthly order volume, or finance monthly business review metrics."
+
+    invariants = [
+        "revenue is non-negative for every order_month",
+        "order_count is a positive integer",
+        "order_month is the first day of a calendar month"
+    ]
+
+    examples = [
+        { question = "What was our revenue last month?", sql = "SELECT revenue FROM {{ ref('Monthly Revenue') }} ORDER BY order_month DESC LIMIT 1" },
+        { question = "How did monthly revenue trend over the last six months?" }
+    ]
 
     query = """
         SELECT

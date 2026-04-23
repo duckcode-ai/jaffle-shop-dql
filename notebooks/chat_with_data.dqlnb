@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "title": "Chat with your warehouse",
+  "metadata": {
+    "status": "draft",
+    "description": "Showcase of the v1.2 chat cell. Ask a plain-English question grounded in the semantic layer and certified blocks; the agent proposes a new block that must pass the governance gate before it can be saved.",
+    "categories": ["agent", "chat", "v1.2", "getting-started"],
+    "owner": "data-team@jaffle.example"
+  },
+  "cells": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "name": "intro",
+      "content": "# Chat with your warehouse\n\n**What this notebook shows** — the **chat cell** (v1.2 Track C). You pose a question; the agent grounds every answer in the semantic layer + certified blocks, and ends the turn with a `BlockProposal { name, domain, owner, description, sql }` that routes through the same governance gate as *Save as Block*. If it fails `has-owner` / `has-domain` / `has-description`, the proposal card lights up red pills — fill them in and save.\n\n**Setup — pick one**\n\n- **Claude Agent SDK (BYOK, hosted API).** Put your key in `~/.dql/credentials`:\n  ```\n  anthropic = \"sk-ant-...\"\n  ```\n  or export `ANTHROPIC_API_KEY`. The notebook server reads the key at startup and proxies requests via `POST /api/llm/complete` — the browser never holds the key.\n\n- **Claude Code provider.** `brew install claude` (or equivalent). The chat cell spawns `claude` in headless stream mode and exposes DQL's MCP tools to the session. No API key needed — Claude Code uses its own auth.\n\nNo key / no CLI → the cell renders a single sentence pointing at the docs. No stack trace."
+    },
+    {
+      "id": "upstream-orders",
+      "type": "sql",
+      "name": "orders_core",
+      "content": "-- Upstream context for the chat cell below. Anything the agent sees in\n-- `semanticRefs` comes from @metric()/@dim() references resolved here.\nSELECT\n  DATE_TRUNC('month', ordered_at) AS ordered_month,\n  COUNT(*)                        AS orders,\n  ROUND(SUM(order_total), 2)      AS gross_revenue,\n  ROUND(SUM(order_cost), 2)       AS fulfillment_cost\nFROM fct_orders\nGROUP BY 1\nORDER BY 1;"
+    },
+    {
+      "id": "chat-ask",
+      "type": "chat",
+      "name": "ask_the_agent",
+      "content": "",
+      "upstream": "orders_core",
+      "chatConfig": {
+        "provider": "claude-agent-sdk",
+        "upstream": "orders_core",
+        "history": [
+          {
+            "role": "user",
+            "content": "I want a block that shows the three months with the largest month-over-month drop in gross revenue. It should be reusable by the finance team and grounded in Monthly Revenue. Propose it."
+          }
+        ]
+      }
+    },
+    {
+      "id": "what-to-expect",
+      "type": "markdown",
+      "name": "what_to_expect",
+      "content": "## What you'll see\n\n1. **Thinking / text turns** — stream inline above the proposal card.\n2. **Tool calls** — `mcp__dql__search_blocks`, `mcp__dql__get_block`, `mcp__dql__list_metrics` etc. The agent grounds on real artifacts before writing SQL.\n3. **Proposal card** — generated SQL + governance pills. Missing owner/domain/description → red. Passing → green Save button writes `.dql` with the current git SHA stamped into `gitCommitSha`.\n\n## Where the grounding comes from\n\n- `semantic-layer/metrics/**` — every metric the agent can reference\n- `blocks/**/*.dql` + the `llmContext` / `examples` / `invariants` fields (v1.2 Track G)\n- Upstream cell's `QueryResult.semanticRefs` — tells the agent which `@metric()` / `@dim()` the author is already working with\n\nNothing about this flow is bundled. The agent only sees what the workspace already exposes."
+    },
+    {
+      "id": "mcp-setup",
+      "type": "markdown",
+      "name": "mcp_setup",
+      "content": "## Using the same tools from Claude Code / Cursor\n\nThe chat cell is one consumer of `packages/dql-mcp`. Any MCP-aware tool can connect to the same server:\n\n```bash\n# Claude Code\nclaude mcp add dql -- dql mcp\n\n# Cursor — add to ~/.cursor/mcp.json\n{\n  \"mcpServers\": {\n    \"dql\": { \"command\": \"dql\", \"args\": [\"mcp\"] }\n  }\n}\n```\n\nExposed tools: `search_blocks`, `get_block`, `query_via_block`, `list_metrics`, `list_dimensions`, `lineage_impact`, `certify`, `suggest_block`. Only `query_via_block` executes SQL — and only through a certified block, never raw. `suggest_block` writes to `blocks/_drafts/` and returns the governance-gate result; it never auto-commits."
+    }
+  ]
+}

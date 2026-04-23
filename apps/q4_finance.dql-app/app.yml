@@ -1,0 +1,11 @@
+name: q4-finance
+domain: finance
+owner: finance@jaffle.example
+description: Q4 finance review — monthly revenue, food/drink mix, and the CXO daily digest.
+cadence: daily
+consumers:
+  - cxo@jaffle.example
+  - finance-lead@jaffle.example
+entryPoints:
+  - notebooks/overview.dqlnb
+  - digest.dql

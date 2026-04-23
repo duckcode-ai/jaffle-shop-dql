@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "title": "Q4 Finance — Overview",
+  "metadata": {
+    "status": "certified",
+    "description": "Entry-point notebook for the Q4 Finance app. Pulls monthly revenue, food/drink mix, and under-target months from certified blocks — one scroll per audience.",
+    "categories": ["app", "finance", "q4", "overview"],
+    "owner": "finance@jaffle.example"
+  },
+  "cells": [
+    {
+      "id": "intro",
+      "type": "markdown",
+      "name": "intro",
+      "content": "# Q4 Finance — Overview\n\n**App** — `apps/q4_finance.dql-app/`\n**Owner** — finance@jaffle.example\n**Consumers** — CXO, finance lead\n**Cadence** — daily digest + ad-hoc review\n\nThis notebook is the app's entry point. It shows live numbers at-a-glance and is cross-linked to:\n\n- `digest.dql` — the CXO daily digest (scheduled, narrative + chart, citations stamped with block SHAs)\n- `blocks/finance/monthly_revenue.dql` — the certified revenue block the digest grounds on\n- `../../notebooks/revenue_review.dqlnb` — the full monthly business review\n\nRun all cells to refresh against the warehouse."
+    },
+    {
+      "id": "revenue-monthly",
+      "type": "sql",
+      "name": "revenue_monthly",
+      "content": "-- The one dataframe this overview depends on. All downstream KPI/chart/filter\n-- cells read from it by name so `Run all` produces a coherent update.\nSELECT\n  DATE_TRUNC('month', ordered_at)                                          AS ordered_month,\n  COUNT(*)                                                                 AS orders,\n  ROUND(SUM(order_total), 2)                                               AS gross_revenue,\n  ROUND(SUM(order_total - order_cost), 2)                                  AS gross_profit,\n  ROUND(SUM(CASE WHEN is_food_order  THEN order_total ELSE 0 END), 2)      AS food_revenue,\n  ROUND(SUM(CASE WHEN is_drink_order THEN order_total ELSE 0 END), 2)      AS drink_revenue\nFROM fct_orders\nGROUP BY 1\nORDER BY 1;"
+    },
+    {
+      "id": "kpi-gross-revenue",
+      "type": "single_value",
+      "name": "kpi_gross_revenue",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "singleValueConfig": {
+        "upstream": "revenue_monthly",
+        "metric": "gross_revenue",
+        "aggregation": "sum",
+        "format": "currency",
+        "label": "Gross revenue (quarter-to-date)"
+      }
+    },
+    {
+      "id": "kpi-gross-profit",
+      "type": "single_value",
+      "name": "kpi_gross_profit",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "singleValueConfig": {
+        "upstream": "revenue_monthly",
+        "metric": "gross_profit",
+        "aggregation": "sum",
+        "format": "currency",
+        "label": "Gross profit (quarter-to-date)"
+      }
+    },
+    {
+      "id": "chart-revenue",
+      "type": "chart",
+      "name": "chart_revenue",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "chartConfig": {
+        "chart": "bar",
+        "x": "ordered_month",
+        "y": "gross_revenue",
+        "title": "Gross revenue by month"
+      }
+    },
+    {
+      "id": "section-under",
+      "type": "markdown",
+      "name": "section_under",
+      "content": "## Months under the $50k floor\n\nThe filter below keeps only months that missed the internal floor. The digest narrative cites this same set."
+    },
+    {
+      "id": "filter-under",
+      "type": "filter",
+      "name": "months_under_target",
+      "content": "",
+      "upstream": "revenue_monthly",
+      "filterConfig": {
+        "upstream": "revenue_monthly",
+        "mode": "keep",
+        "groups": [
+          {
+            "id": "g1",
+            "combinator": "and",
+            "rules": [
+              { "id": "r1", "column": "gross_revenue", "operation": "lt", "value": "50000" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "table-under",
+      "type": "table",
+      "name": "table_under_target",
+      "content": "",
+      "upstream": "months_under_target",
+      "tableConfig": {
+        "upstream": "months_under_target",
+        "visibleColumns": ["ordered_month", "orders", "gross_revenue", "gross_profit"]
+      }
+    },
+    {
+      "id": "section-block",
+      "type": "markdown",
+      "name": "section_block",
+      "content": "## Certified block grounding the digest\n\nThe cell below is the **Monthly Revenue** block the CXO digest cites (bound, lock icon). Every numeric claim in the narrative is stamped with this block's git SHA. Edit the `.dql` file on disk and both this cell and the next digest run pick up the change."
+    },
+    {
+      "id": "block-monthly-revenue",
+      "type": "sql",
+      "name": "monthly_revenue_block",
+      "content": "SELECT\n    DATE_TRUNC('month', ordered_at) AS order_month,\n    COUNT(*) AS order_count,\n    ROUND(SUM(order_total), 2) AS revenue\nFROM fct_orders\nGROUP BY 1\nORDER BY 1",
+      "blockBinding": {
+        "path": "blocks/finance/monthly_revenue.dql",
+        "state": "bound",
+        "originalContent": "SELECT\n    DATE_TRUNC('month', ordered_at) AS order_month,\n    COUNT(*) AS order_count,\n    ROUND(SUM(order_total), 2) AS revenue\nFROM fct_orders\nGROUP BY 1\nORDER BY 1"
+      }
+    },
+    {
+      "id": "outro",
+      "type": "markdown",
+      "name": "outro",
+      "content": "## Next steps\n\n- **Run the digest** — `dql compile apps/q4_finance.dql-app/digest.dql` produces `dist/q4-finance-<iso>.html`\n- **Schedule it** — `dql schedule start` runs every `@schedule`-decorated block on cadence; `dql schedule stop` to halt\n- **Ask an agent** — open `../../notebooks/chat_with_data.dqlnb` to pose the question and let the agent propose a new block grounded in this app's surface"
+    }
+  ]
+}

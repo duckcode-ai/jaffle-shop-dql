@@ -7,9 +7,17 @@
     "dql:validate": "dql validate .",
     "dql:notebook": "dql notebook .",
     "dql:compile": "dql compile .",
-    "dql:lineage": "dql lineage"
+    "dql:lineage": "dql lineage",
+    "dql:mcp": "dql mcp",
+    "dql:fmt": "dql fmt .",
+    "dql:fmt:check": "dql fmt --check .",
+    "dql:app:ls": "dql app ls",
+    "dql:app:show": "dql app show q4-finance",
+    "dql:schedule:list": "dql schedule list",
+    "dql:schedule:start": "dql schedule start",
+    "dql:schedule:stop": "dql schedule stop"
   },
   "dependencies": {
-    "@duckcodeailabs/dql-cli": "^1.0.4"
+    "@duckcodeailabs/dql-cli": "^1.2.2"
   }
 }

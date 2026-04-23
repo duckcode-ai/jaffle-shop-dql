@@ -1,0 +1,27 @@
+@schedule("daily", "9:00 AM")
+@email_to("cxo@jaffle.example")
+digest "Q4 Finance Daily Digest" {
+    description = "Daily CXO-facing narrative + chart over monthly revenue. Every numeric claim in the narrative is stamped with the source block's git SHA."
+
+    narrative {
+        prompt = """
+            Summarize monthly revenue for the current quarter in two short paragraphs.
+            - Call out the strongest and weakest month and the % gap between them.
+            - Note any month that missed the $50k floor.
+            - Cite every numeric claim with its source block SHA.
+        """
+        sources = [ref("Monthly Revenue")]
+    }
+
+    chart.bar(
+        SELECT
+            DATE_TRUNC('month', ordered_at) AS order_month,
+            ROUND(SUM(order_total), 2)      AS revenue
+        FROM fct_orders
+        GROUP BY 1
+        ORDER BY 1,
+        x = order_month,
+        y = revenue,
+        title = "Monthly revenue"
+    )
+}
