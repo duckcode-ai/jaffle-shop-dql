@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "id": "segments-overview",
+  "metadata": {
+    "title": "Customer Success — Segment Overview",
+    "description": "Customer segment breakdown + lifetime spend. Regional leads see only their region's customers (via @rls on the underlying block).",
+    "domain": "customer",
+    "tags": ["segments", "cohorts"]
+  },
+  "params": [
+    {
+      "id": "as_of",
+      "type": "date",
+      "default": "today"
+    }
+  ],
+  "filters": [
+    {
+      "id": "segment_filter",
+      "type": "select",
+      "options": ["ALL", "premium", "standard"],
+      "default": "ALL",
+      "bindsTo": "store_segment",
+      "description": "Filter to a single store segment band. Regional leads are pre-narrowed via RLS."
+    }
+  ],
+  "layout": {
+    "kind": "grid",
+    "cols": 12,
+    "rowHeight": 80,
+    "items": [
+      {
+        "i": "kpi-customers",
+        "x": 0, "y": 0, "w": 4, "h": 2,
+        "title": "Total customers",
+        "block": { "blockId": "Customer Segments" },
+        "viz": { "type": "kpi", "options": { "field": "customers" } }
+      },
+      {
+        "i": "kpi-avg-orders",
+        "x": 4, "y": 0, "w": 4, "h": 2,
+        "title": "Avg lifetime orders",
+        "block": { "blockId": "Customer Segments" },
+        "viz": { "type": "kpi", "options": { "field": "avg_lifetime_orders" } }
+      },
+      {
+        "i": "kpi-avg-spend",
+        "x": 8, "y": 0, "w": 4, "h": 2,
+        "title": "Avg lifetime spend",
+        "block": { "blockId": "Customer Segments" },
+        "viz": { "type": "kpi", "options": { "field": "avg_lifetime_spend", "format": "currency" } }
+      },
+      {
+        "i": "segments-bar",
+        "x": 0, "y": 2, "w": 12, "h": 5,
+        "title": "Customers by segment",
+        "block": { "blockId": "Customer Segments" },
+        "viz": {
+          "type": "bar",
+          "options": { "x": "customer_type", "y": "customers" }
+        }
+      },
+      {
+        "i": "segments-table",
+        "x": 0, "y": 7, "w": 12, "h": 4,
+        "title": "Segment metrics",
+        "block": { "blockId": "Customer Segments" },
+        "viz": { "type": "table" }
+      }
+    ]
+  }
+}

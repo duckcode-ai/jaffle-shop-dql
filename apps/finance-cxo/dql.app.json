@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "id": "finance-cxo",
+  "name": "Finance — CXO Review",
+  "description": "Monthly + quarterly revenue review surface for the CFO and finance leadership.",
+  "domain": "finance",
+  "owners": ["cfo@jaffle.example"],
+  "tags": ["cfo", "monthly", "quarterly", "review"],
+
+  "members": [
+    {
+      "userId": "cfo@jaffle.example",
+      "displayName": "Sara (CFO)",
+      "roles": ["owner"]
+    },
+    {
+      "userId": "controller@jaffle.example",
+      "displayName": "Daniel (Controller)",
+      "roles": ["analyst"]
+    },
+    {
+      "userId": "fp&a@jaffle.example",
+      "displayName": "Priya (FP&A Analyst)",
+      "roles": ["analyst"]
+    },
+    {
+      "userId": "board.observer@jaffle.example",
+      "displayName": "Board Observer",
+      "roles": ["viewer"]
+    }
+  ],
+
+  "roles": [
+    {
+      "id": "owner",
+      "displayName": "Owner",
+      "description": "Full read + execute on every block. Sets schedules and policies."
+    },
+    {
+      "id": "analyst",
+      "displayName": "Analyst",
+      "description": "Read + execute on confidential. Authors and certifies blocks."
+    },
+    {
+      "id": "viewer",
+      "displayName": "Viewer",
+      "description": "Read-only on certified blocks; no AI generation."
+    }
+  ],
+
+  "policies": [
+    {
+      "id": "viewers-read-internal",
+      "domain": "finance",
+      "minClassification": "internal",
+      "allowedRoles": ["viewer", "analyst", "owner"],
+      "accessLevel": "read",
+      "enabled": true
+    },
+    {
+      "id": "analyst-execute-confidential",
+      "domain": "finance",
+      "minClassification": "confidential",
+      "allowedRoles": ["analyst", "owner"],
+      "accessLevel": "execute",
+      "enabled": true
+    },
+    {
+      "id": "restricted-owner-only",
+      "domain": "finance",
+      "minClassification": "restricted",
+      "allowedRoles": ["owner"],
+      "accessLevel": "read",
+      "enabled": true
+    }
+  ],
+
+  "rlsBindings": [],
+
+  "schedules": [
+    {
+      "id": "monday-mbr",
+      "cron": "0 7 * * 1",
+      "dashboard": "monthly-review",
+      "description": "Monday 07:00 ET monthly business review digest delivered to the finance leadership channel.",
+      "deliver": [
+        { "kind": "slack", "channel": "#finance-leadership" },
+        { "kind": "email", "to": ["cfo@jaffle.example", "controller@jaffle.example"] }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "quarter-end-board-pack",
+      "cron": "0 8 1 1,4,7,10 *",
+      "dashboard": "quarterly-board",
+      "description": "Quarter-end board pack delivered the morning of the first day of each quarter.",
+      "deliver": [
+        { "kind": "email", "to": ["cfo@jaffle.example", "board.observer@jaffle.example"] }
+      ],
+      "enabled": true
+    }
+  ],
+
+  "homepage": { "type": "dashboard", "id": "monthly-review" }
+}

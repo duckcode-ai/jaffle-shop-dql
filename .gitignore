@@ -20,9 +20,10 @@ logs/
 .meltano/
 plugins/
 
-# DQL runtime
+# DQL runtime — but Skills are part of the project, so they stay tracked.
 dql-manifest.json
-.dql/
+.dql/cache/
+.dql/runs/
 *.run.json
 .dql-user-prefs.json
 

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "id": "quarterly-board",
+  "metadata": {
+    "title": "Finance — Quarterly Board Pack",
+    "description": "Public-facing board pack summary. Read-only — gets emailed to the board observer at quarter-end.",
+    "domain": "finance",
+    "tags": ["board", "quarterly", "external"]
+  },
+  "layout": {
+    "kind": "grid",
+    "cols": 12,
+    "rowHeight": 80,
+    "items": [
+      {
+        "i": "headline",
+        "x": 0, "y": 0, "w": 12, "h": 2,
+        "title": "Quarter-to-date revenue",
+        "block": { "blockId": "Monthly Revenue" },
+        "viz": { "type": "kpi", "options": { "field": "revenue" } }
+      },
+      {
+        "i": "trend",
+        "x": 0, "y": 2, "w": 12, "h": 6,
+        "title": "Trailing 12-month revenue",
+        "block": { "blockId": "Monthly Revenue" },
+        "viz": {
+          "type": "bar",
+          "options": { "x": "order_month", "y": "revenue" }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "id": "top-products",
+  "metadata": {
+    "title": "Product — Top Performers",
+    "description": "Top-10 products by revenue with units sold and gross margin. Backs the weekly product review.",
+    "domain": "product",
+    "tags": ["weekly", "margin", "top-products"]
+  },
+  "filters": [
+    {
+      "id": "product_type",
+      "type": "select",
+      "options": ["ALL", "jaffle", "beverage"],
+      "default": "ALL",
+      "bindsTo": "product_type",
+      "description": "Show only one product type, or all."
+    }
+  ],
+  "layout": {
+    "kind": "grid",
+    "cols": 12,
+    "rowHeight": 80,
+    "items": [
+      {
+        "i": "kpi-revenue",
+        "x": 0, "y": 0, "w": 4, "h": 2,
+        "title": "Top-10 total revenue",
+        "block": { "blockId": "Top Products by Revenue" },
+        "viz": { "type": "kpi", "options": { "field": "revenue", "format": "currency" } }
+      },
+      {
+        "i": "kpi-margin",
+        "x": 4, "y": 0, "w": 4, "h": 2,
+        "title": "Top-10 gross margin",
+        "block": { "blockId": "Top Products by Revenue" },
+        "viz": { "type": "kpi", "options": { "field": "gross_margin", "format": "currency" } }
+      },
+      {
+        "i": "kpi-units",
+        "x": 8, "y": 0, "w": 4, "h": 2,
+        "title": "Top-10 units sold",
+        "block": { "blockId": "Top Products by Revenue" },
+        "viz": { "type": "kpi", "options": { "field": "units_sold" } }
+      },
+      {
+        "i": "revenue-bar",
+        "x": 0, "y": 2, "w": 12, "h": 5,
+        "title": "Top 10 by revenue",
+        "block": { "blockId": "Top Products by Revenue" },
+        "viz": {
+          "type": "bar",
+          "options": { "x": "product_name", "y": "revenue" }
+        }
+      },
+      {
+        "i": "products-table",
+        "x": 0, "y": 7, "w": 12, "h": 4,
+        "title": "Top 10 details",
+        "block": { "blockId": "Top Products by Revenue" },
+        "viz": { "type": "table" }
+      }
+    ]
+  }
+}

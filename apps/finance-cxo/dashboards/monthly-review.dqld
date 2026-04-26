@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "id": "monthly-review",
+  "metadata": {
+    "title": "Finance — Monthly Business Review",
+    "description": "Headline revenue, order-volume trend, and customer segment breakdown for the monthly leadership review.",
+    "domain": "finance",
+    "tags": ["mbr", "monthly", "cfo"]
+  },
+  "params": [
+    {
+      "id": "as_of",
+      "type": "date",
+      "default": "today",
+      "description": "Snapshot date — defaults to today's calendar month."
+    }
+  ],
+  "filters": [],
+  "layout": {
+    "kind": "grid",
+    "cols": 12,
+    "rowHeight": 80,
+    "items": [
+      {
+        "i": "kpi-current-month",
+        "x": 0, "y": 0, "w": 4, "h": 2,
+        "title": "Current month revenue",
+        "block": { "blockId": "Monthly Revenue" },
+        "viz": { "type": "single_value", "options": { "format": "currency", "field": "revenue" } }
+      },
+      {
+        "i": "kpi-orders",
+        "x": 4, "y": 0, "w": 4, "h": 2,
+        "title": "Orders this month",
+        "block": { "blockId": "Monthly Revenue" },
+        "viz": { "type": "kpi", "options": { "field": "order_count" } }
+      },
+      {
+        "i": "kpi-segments",
+        "x": 8, "y": 0, "w": 4, "h": 2,
+        "title": "Active customer segments",
+        "block": { "blockId": "Customer Segments" },
+        "viz": { "type": "kpi", "options": { "field": "customers" } }
+      },
+      {
+        "i": "trend-revenue",
+        "x": 0, "y": 2, "w": 12, "h": 5,
+        "title": "Monthly revenue trend",
+        "block": { "blockId": "Monthly Revenue" },
+        "viz": {
+          "type": "line",
+          "options": { "x": "order_month", "y": "revenue" }
+        }
+      },
+      {
+        "i": "segments-table",
+        "x": 0, "y": 7, "w": 12, "h": 4,
+        "title": "Customer segment breakdown",
+        "block": { "blockId": "Customer Segments" },
+        "viz": { "type": "table" }
+      }
+    ]
+  }
+}

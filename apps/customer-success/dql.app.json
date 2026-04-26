@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "id": "customer-success",
+  "name": "Customer Success — Cohort Ops",
+  "description": "Customer segment + cohort retention dashboards for the CS leadership and regional CS leads. Regional viewers are RLS-narrowed.",
+  "domain": "customer",
+  "owners": ["vp.cs@jaffle.example"],
+  "tags": ["cs", "cohorts", "retention", "growth"],
+
+  "members": [
+    {
+      "userId": "vp.cs@jaffle.example",
+      "displayName": "Maya (VP CS)",
+      "roles": ["owner"]
+    },
+    {
+      "userId": "growth.analyst@jaffle.example",
+      "displayName": "Theo (Growth Analyst)",
+      "roles": ["analyst"]
+    },
+    {
+      "userId": "lead.na@jaffle.example",
+      "displayName": "Alice (NA Lead)",
+      "roles": ["regional_lead"],
+      "attributes": { "region": "NA", "store_segment": "premium" }
+    },
+    {
+      "userId": "lead.emea@jaffle.example",
+      "displayName": "Ben (EMEA Lead)",
+      "roles": ["regional_lead"],
+      "attributes": { "region": "EMEA", "store_segment": "standard" }
+    },
+    {
+      "userId": "lead.apac@jaffle.example",
+      "displayName": "Lin (APAC Lead)",
+      "roles": ["regional_lead"],
+      "attributes": { "region": "APAC", "store_segment": "standard" }
+    }
+  ],
+
+  "roles": [
+    {
+      "id": "owner",
+      "displayName": "Owner",
+      "description": "VP of Customer Success — full access across regions."
+    },
+    {
+      "id": "analyst",
+      "displayName": "Analyst",
+      "description": "Read + execute on confidential. Can author cohort blocks."
+    },
+    {
+      "id": "regional_lead",
+      "displayName": "Regional Lead",
+      "description": "Read-only on confidential, narrowed to their region via RLS."
+    }
+  ],
+
+  "policies": [
+    {
+      "id": "leads-read-confidential",
+      "domain": "customer",
+      "minClassification": "confidential",
+      "allowedRoles": ["regional_lead", "analyst", "owner"],
+      "accessLevel": "read",
+      "enabled": true
+    },
+    {
+      "id": "analyst-execute-confidential",
+      "domain": "customer",
+      "minClassification": "confidential",
+      "allowedRoles": ["analyst", "owner"],
+      "accessLevel": "execute",
+      "enabled": true
+    }
+  ],
+
+  "rlsBindings": [
+    {
+      "role": "regional_lead",
+      "variable": "user.region",
+      "from": "region"
+    },
+    {
+      "role": "regional_lead",
+      "variable": "user.store_segment",
+      "from": "store_segment"
+    }
+  ],
+
+  "schedules": [
+    {
+      "id": "weekly-cs-digest",
+      "cron": "0 8 * * 1",
+      "dashboard": "segments-overview",
+      "description": "Monday 08:00 ET cohort digest delivered to #cs-leads.",
+      "deliver": [
+        { "kind": "slack", "channel": "#cs-leads" }
+      ],
+      "enabled": true
+    }
+  ],
+
+  "homepage": { "type": "dashboard", "id": "segments-overview" }
+}

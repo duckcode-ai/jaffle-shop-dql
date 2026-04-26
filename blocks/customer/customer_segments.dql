@@ -1,6 +1,7 @@
 block "Customer Segments" {
     domain = "customer"
     type = "custom"
+    status = "certified"
     description = "Counts customers and average lifetime behaviour (orders, spend) per customer_type from `dim_customers`. Owned by growth for segment reviews."
     owner = "growth@jaffle.example"
     tags = ["customers", "segmentation", "lifetime", "growth"]
