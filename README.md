@@ -23,7 +23,32 @@ A complete, runnable example of [DQL](https://github.com/duckcode-ai/dql) on top
 - Three **certified DQL blocks** (`finance`, `customer`, `product`) with tests, owners, and agent-facing `llmContext`
 - Four **notebooks** — SQL, chart, pivot, filter, single-value, bound-block, and the new **chat cell**
 - A domain-organized **semantic layer** (metrics, dimensions, cubes) that notebooks and the agent consume
-- A **Q4 Finance app** (`apps/q4_finance.dql-app/`) with a scheduled CXO digest and an entry-point overview notebook
+- Three **first-class Apps** (`finance-cxo`, `customer-success`, `product-team`) with members, roles, access policies, RLS bindings, and weekly schedules — plus the legacy `q4_finance.dql-app`
+
+## Showcase
+
+**Apps + persona switching** — open an App, click the persona switcher,
+preview the dashboard as any member. Regional leads carry RLS-narrowing
+attributes that flow into block execution at query time.
+
+<p><img src="docs/media/apps.gif" alt="Apps + persona switching" width="880"></p>
+
+**Block Library with certified flags** — every block shows its
+certification status inline. The agent's block-first answer loop only
+matches blocks with `status: certified`.
+
+<p><img src="docs/media/studio.gif" alt="Block Library + certified flags" width="880"></p>
+
+**Full-stack lineage** — `Domain → App → Dashboard → Block → metric → dbt model → source`,
+rendered as an interactive React Flow + dagre graph. 67 nodes, 70 edges
+in this project.
+
+<p><img src="docs/media/lineage.gif" alt="Lineage DAG" width="880"></p>
+
+**Chat with your warehouse** — agent-grounded notebook with a chat cell
+that runs every answer through the same governance gate as `Save as Block`.
+
+<p><img src="docs/media/agent.gif" alt="Chat notebook" width="880"></p>
 
 ## Quickstart
 
