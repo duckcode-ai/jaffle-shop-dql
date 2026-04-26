@@ -25,16 +25,46 @@ A complete, runnable example of [DQL](https://github.com/duckcode-ai/dql) on top
 - A domain-organized **semantic layer** (metrics, dimensions, cubes) that notebooks and the agent consume
 - A **Q4 Finance app** (`apps/q4_finance.dql-app/`) with a scheduled CXO digest and an entry-point overview notebook
 
-## Requirements
+## Quickstart
+
+Two paths. **Pick one.**
+
+### Option A — Docker (recommended) · 60 seconds
+
+The fastest way. No Python, Node, meltano, or dbt to install — the image
+bundles everything.
+
+```bash
+git clone https://github.com/duckcode-ai/jaffle-shop-dql.git
+cd jaffle-shop-dql
+docker compose up
+```
+
+> First run takes ~3–5 minutes (image build + meltano + dbt seeding).
+> The 118 MB DuckDB warehouse lands in the bind-mounted directory and is
+> reused on every subsequent start.
+
+The notebook opens on **http://127.0.0.1:3474**. Start with
+`notebooks/welcome.dqlnb` — a 5-minute tour.
+
+To force a fresh seed:
+```bash
+docker compose down -v && rm -f jaffle_shop.duckdb && docker compose up
+```
+
+To run a local LLM alongside the notebook:
+```bash
+docker compose --profile ollama up
+```
+
+### Option B — Native install (Python + Node) · 5 minutes
 
 | Tool | Version | Why |
 |---|---|---|
-| Node.js | `≥ 18` | DQL CLI is an npm package |
+| Node.js | `≥ 20` | DQL CLI is an npm package |
 | Python | `≥ 3.10` | dbt-duckdb + meltano |
 | DuckDB | bundled | comes in with dbt-duckdb |
-| Anthropic API key *or* Claude Code | optional | only if you use the chat cell / `dql mcp` agentic path |
-
-## Quickstart
+| Anthropic / OpenAI / Gemini key *or* local Ollama | optional | only for the chat cell / `dql agent` |
 
 ```bash
 # 1. Python deps (dbt-duckdb)
@@ -54,9 +84,11 @@ npm install
 npm run dql:notebook
 ```
 
-The notebook opens on `http://localhost:3474`. Start with `notebooks/welcome.dqlnb` — a 5-minute tour.
+The notebook opens on `http://127.0.0.1:3474`.
 
-> **Prefer a one-liner?** `npx create-dql-app my-proj` scaffolds a minimal starter elsewhere. This repo is the full worked example — dbt + semantic layer + certified blocks + app + digest.
+> **Prefer a minimal starter?** `npx create-dql-app my-proj` scaffolds a
+> small example elsewhere. This repo is the full worked example — dbt +
+> semantic layer + certified blocks + App + digest + agentic chat cell.
 
 ## What's in the box
 
