@@ -1,6 +1,7 @@
 block "Monthly Revenue" {
     domain = "finance"
     type = "custom"
+    status = "certified"
     description = "Monthly order count and gross revenue from the dbt fact table `fct_orders`. Backs the monthly business review dashboard owned by finance."
     owner = "finance@jaffle.example"
     tags = ["orders", "revenue", "monthly", "finance-mbr"]

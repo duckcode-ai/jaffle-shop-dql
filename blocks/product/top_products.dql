@@ -1,6 +1,7 @@
 block "Top Products by Revenue" {
     domain = "product"
     type = "custom"
+    status = "certified"
     description = "Top 10 products ranked by all-time revenue, with units sold and gross margin (product_price − supply_cost) from `order_items` joined to `stg_products`. Backs the weekly product review."
     owner = "product@jaffle.example"
     tags = ["products", "revenue", "margin", "product-review"]

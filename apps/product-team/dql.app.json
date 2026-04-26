@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "id": "product-team",
+  "name": "Product — Performance Review",
+  "description": "Top-products dashboards for the product team's weekly review. Surfaces revenue + gross margin per item.",
+  "domain": "product",
+  "owners": ["product@jaffle.example"],
+  "tags": ["product", "weekly", "margin"],
+
+  "members": [
+    {
+      "userId": "product.lead@jaffle.example",
+      "displayName": "Jamie (Product Lead)",
+      "roles": ["owner"]
+    },
+    {
+      "userId": "pm.food@jaffle.example",
+      "displayName": "Riley (PM — Food)",
+      "roles": ["pm"],
+      "attributes": { "category": "jaffle" }
+    },
+    {
+      "userId": "pm.drinks@jaffle.example",
+      "displayName": "Casey (PM — Drinks)",
+      "roles": ["pm"],
+      "attributes": { "category": "beverage" }
+    },
+    {
+      "userId": "merchandising@jaffle.example",
+      "displayName": "Avery (Merchandising)",
+      "roles": ["viewer"]
+    }
+  ],
+
+  "roles": [
+    {
+      "id": "owner",
+      "displayName": "Owner",
+      "description": "Product Lead — full access; sets review cadence and policies."
+    },
+    {
+      "id": "pm",
+      "displayName": "Product Manager",
+      "description": "Read + execute on the product domain; can certify new product blocks."
+    },
+    {
+      "id": "viewer",
+      "displayName": "Viewer",
+      "description": "Read-only on certified product dashboards."
+    }
+  ],
+
+  "policies": [
+    {
+      "id": "viewers-read-internal",
+      "domain": "product",
+      "minClassification": "internal",
+      "allowedRoles": ["viewer", "pm", "owner"],
+      "accessLevel": "read",
+      "enabled": true
+    },
+    {
+      "id": "pm-execute-confidential",
+      "domain": "product",
+      "minClassification": "confidential",
+      "allowedRoles": ["pm", "owner"],
+      "accessLevel": "execute",
+      "enabled": true
+    }
+  ],
+
+  "rlsBindings": [],
+
+  "schedules": [
+    {
+      "id": "weekly-product-review",
+      "cron": "0 9 * * 5",
+      "dashboard": "top-products",
+      "description": "Friday 09:00 ET top-products digest delivered to #product-review.",
+      "deliver": [
+        { "kind": "slack", "channel": "#product-review" }
+      ],
+      "enabled": true
+    }
+  ],
+
+  "homepage": { "type": "dashboard", "id": "top-products" }
+}
