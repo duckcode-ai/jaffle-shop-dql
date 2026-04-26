@@ -1,0 +1,46 @@
+# Jaffle Shop — DQL example. One-liner up.
+#
+#   docker compose up
+#   open http://127.0.0.1:3474
+#
+# First run: ~3-5 minutes (image build + meltano + dbt seeding).
+# Subsequent runs: warehouse is cached on the bind mount; instant start.
+#
+# To force a fresh seed:
+#   docker compose down -v && rm -f jaffle_shop.duckdb && docker compose up
+
+services:
+  notebook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: duckcodeailabs/dql-jaffle-shop:latest
+    container_name: dql-jaffle-shop
+    ports:
+      - "127.0.0.1:3474:3474"
+    volumes:
+      # Bind the project — saved blocks / notebooks / the warehouse itself
+      # all land in your local checkout.
+      - ./:/workspace
+    environment:
+      # Optional: any of these enable the chat cell + `dql agent ask`.
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      # Use the local Ollama service below by default (network alias resolves):
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://ollama:11434}
+    # Default CMD comes from the Dockerfile; override here if you want
+    # to run something else (e.g. `dql agent ask "..."`).
+
+  ollama:
+    profiles: [ollama]
+    image: ollama/ollama:latest
+    container_name: dql-jaffle-ollama
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    command: ["serve"]
+
+volumes:
+  ollama-data:

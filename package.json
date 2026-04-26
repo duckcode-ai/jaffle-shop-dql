@@ -18,6 +18,7 @@
     "dql:schedule:stop": "dql schedule stop"
   },
   "dependencies": {
-    "@duckcodeailabs/dql-cli": "^1.2.2"
+    "@duckcodeailabs/dql-cli": "^1.4.0",
+    "duckdb": "^1.4.4"
   }
 }

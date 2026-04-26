@@ -1,0 +1,18 @@
+# Don't ship local state or builds into the image.
+.git
+.github
+.vscode
+.idea
+.claude
+node_modules
+**/node_modules
+target
+dbt_packages
+.meltano
+logs
+*.log
+.user.yml
+.env
+.env.*
+**/.DS_Store
+docs/screenshots
