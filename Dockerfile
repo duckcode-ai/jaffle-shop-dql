@@ -1,8 +1,8 @@
-# Jaffle Shop — DQL example, single-image build.
+# Jaffle Shop - DQL example, single-image build.
 #
 # Bundles every toolchain needed to run the demo:
 #   - Python 3.11 + dbt-duckdb (warehouse build)
-#   - Meltano (tap-jaffle-shop → target-duckdb extract-load)
+#   - Meltano (tap-jaffle-shop -> target-duckdb extract-load)
 #   - Node 20 + @duckcodeailabs/dql-cli (notebook + agent)
 #
 # Entrypoint is smart: if `jaffle_shop.duckdb` already exists at
@@ -37,12 +37,12 @@ RUN python3 -m venv /opt/dbt-venv \
  && /opt/dbt-venv/bin/pip install "dbt-duckdb~=1.10.0"
 ENV PATH="/opt/dbt-venv/bin:${PATH}"
 
-# Meltano via pipx — used for the tap-jaffle-shop EL.
+# Meltano via pipx - used for the tap-jaffle-shop EL.
 RUN pipx install --pip-args="setuptools<82" meltano==3.7.1
 
-# DQL CLI globally available — published to npm. Pinning to a compatible
+# DQL CLI globally available - published to npm. Pinning to a compatible
 # minor; bump alongside the example.
-RUN npm i -g @duckcodeailabs/dql-cli@^1.4.0
+RUN npm i -g @duckcodeailabs/dql-cli@1.4.1
 
 WORKDIR /workspace
 

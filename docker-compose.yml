@@ -1,4 +1,4 @@
-# Jaffle Shop — DQL example. One-liner up.
+# Jaffle Shop - DQL example. One-liner up.
 #
 #   docker compose up
 #   open http://127.0.0.1:3474
@@ -19,16 +19,24 @@ services:
     ports:
       - "127.0.0.1:3474:3474"
     volumes:
-      # Bind the project — saved blocks / notebooks / the warehouse itself
+      # Bind the project - saved blocks / notebooks / the warehouse itself
       # all land in your local checkout.
       - ./:/workspace
     environment:
       # Optional: any of these enable the chat cell + `dql agent ask`.
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-}
       # Use the local Ollama service below by default (network alias resolves):
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://ollama:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.1}
+      DQL_SLACK_WEBHOOK: ${DQL_SLACK_WEBHOOK:-}
+      DQL_SMTP_URL: ${DQL_SMTP_URL:-}
+      DQL_SMTP_FROM: ${DQL_SMTP_FROM:-}
+      SLACK_SIGNING_SECRET: ${SLACK_SIGNING_SECRET:-}
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN:-}
     # Default CMD comes from the Dockerfile; override here if you want
     # to run something else (e.g. `dql agent ask "..."`).
 
