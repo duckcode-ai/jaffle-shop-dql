@@ -107,6 +107,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 pipx install meltano
 
+meltano lock --update
 meltano install
 meltano run tap-jaffle-shop target-duckdb
 dbt deps
@@ -120,6 +121,9 @@ npm run dql:notebook
 ```
 
 Open [http://127.0.0.1:3474](http://127.0.0.1:3474).
+
+`npm install` installs the DQL CLI from npm for this project, so the `npm run
+dql:*` scripts do not require a global `dql` binary.
 
 See [docs/INSTALL.md](docs/INSTALL.md) for detailed setup and troubleshooting.
 

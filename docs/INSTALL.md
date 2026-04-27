@@ -72,6 +72,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 pipx install meltano
+meltano lock --update
 meltano install
 meltano run tap-jaffle-shop target-duckdb
 
@@ -86,6 +87,9 @@ npm run dql:notebook
 ```
 
 Open [http://127.0.0.1:3474](http://127.0.0.1:3474).
+
+The DQL CLI is installed by `npm install` from this repo's `package.json`, so
+you do not need a global `dql` command for the native path.
 
 ## Expected Files After Setup
 
@@ -106,4 +110,3 @@ dbt_packages/
 | `dbt build` cannot find `jaffle_raw` tables | Run `meltano run tap-jaffle-shop target-duckdb` first. |
 | Notebook shows schema introspection errors | Confirm `jaffle_shop.duckdb` exists and is not locked by another process. |
 | Chat cell reports missing provider credentials | Export an API key or use the Ollama profile. |
-
