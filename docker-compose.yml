@@ -14,7 +14,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: duckcodeailabs/dql-jaffle-shop:latest
+    # Versioned local tag avoids Docker reusing an older `latest` image that
+    # had Meltano 3.x and failed to discover target-duckdb.
+    image: duckcodeailabs/dql-jaffle-shop:1.4.1
     container_name: dql-jaffle-shop
     ports:
       - "127.0.0.1:3474:3474"

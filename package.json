@@ -18,7 +18,7 @@
     "dql:schedule:list": "dql schedule list",
     "dql:schedule:start": "dql schedule start",
     "dql:schedule:stop": "dql schedule stop",
-    "seed:meltano": "meltano install && meltano run tap-jaffle-shop target-duckdb",
+    "seed:meltano": "meltano lock --update && meltano install && meltano run tap-jaffle-shop target-duckdb",
     "seed:dbt": "dbt deps && dbt build --profiles-dir .",
     "setup:warehouse": "npm run seed:meltano && npm run seed:dbt"
   },

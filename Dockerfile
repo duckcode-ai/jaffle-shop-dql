@@ -2,7 +2,7 @@
 #
 # Bundles every toolchain needed to run the demo:
 #   - Python 3.11 + dbt-duckdb (warehouse build)
-#   - Meltano (tap-jaffle-shop -> target-duckdb extract-load)
+#   - Meltano 4.x (tap-jaffle-shop -> target-duckdb extract-load)
 #   - Node 20 + @duckcodeailabs/dql-cli (notebook + agent)
 #
 # Entrypoint is smart: if `jaffle_shop.duckdb` already exists at
@@ -37,8 +37,10 @@ RUN python3 -m venv /opt/dbt-venv \
  && /opt/dbt-venv/bin/pip install "dbt-duckdb~=1.10.0"
 ENV PATH="/opt/dbt-venv/bin:${PATH}"
 
-# Meltano via pipx - used for the tap-jaffle-shop EL.
-RUN pipx install --pip-args="setuptools<82" meltano==3.7.1
+# Meltano via pipx - used for the tap-jaffle-shop EL. Keep this aligned with
+# `requires_meltano` in meltano.yml; older 3.x images do not reliably resolve
+# the Hub loader lock for target-duckdb.
+RUN pipx install --pip-args="setuptools<82" meltano==4.1.2
 
 # DQL CLI globally available - published to npm. Pinning to a compatible
 # minor; bump alongside the example.

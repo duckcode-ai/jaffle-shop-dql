@@ -24,6 +24,9 @@ if [[ ! -f "${WAREHOUSE}" ]]; then
   # Step 1: pull raw tables via meltano. `meltano install` is idempotent and
   # keeps older local checkouts from failing when `.meltano/` exists but the
   # plugin venvs are missing or stale.
+  log "Refreshing meltano plugin locks..."
+  cd /workspace && meltano lock --update
+
   log "Installing/updating meltano plugins..."
   cd /workspace && meltano install
 
