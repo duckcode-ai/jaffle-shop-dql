@@ -58,6 +58,14 @@
 
   "policies": [
     {
+      "id": "dashboard-execute-internal",
+      "domain": "customer",
+      "minClassification": "internal",
+      "allowedRoles": ["regional_lead", "analyst", "owner"],
+      "accessLevel": "execute",
+      "enabled": true
+    },
+    {
       "id": "leads-read-confidential",
       "domain": "customer",
       "minClassification": "confidential",

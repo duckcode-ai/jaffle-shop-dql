@@ -58,6 +58,14 @@
       "enabled": true
     },
     {
+      "id": "dashboard-execute-internal",
+      "domain": "finance",
+      "minClassification": "internal",
+      "allowedRoles": ["viewer", "analyst", "owner"],
+      "accessLevel": "execute",
+      "enabled": true
+    },
+    {
       "id": "analyst-execute-confidential",
       "domain": "finance",
       "minClassification": "confidential",

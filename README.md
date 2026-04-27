@@ -20,6 +20,30 @@ than the starter template on purpose: it shows how a single local user can
 package trusted analytics into business-facing Apps while keeping everything
 as source files.
 
+## UI Walkthrough
+
+**Finance App with live certified blocks** — the Apps Command Center packages
+the monthly business review, dashboard tiles, persona preview, and certified
+block citations from git-backed `apps/` and `blocks/` files.
+
+![Finance App dashboard](docs/media/apps.gif)
+
+**Certified Block Library** — search across block names, domains, owners,
+tags, descriptions, and agent-facing context before reusing a block in a
+notebook or App.
+
+![Certified block library](docs/media/studio.gif)
+
+**End-to-end lineage** — follow the path from source tables and dbt models to
+DQL blocks and the Apps/notebooks that consume them.
+
+![Jaffle lineage](docs/media/lineage.gif)
+
+**AI provider setup** — configure Claude, OpenAI, Gemini, Ollama, Slack, and
+email keys from Settings; missing providers stay optional until selected.
+
+![AI provider settings](docs/media/agent.gif)
+
 ## What You Get
 
 - DuckDB warehouse built from the canonical Jaffle Shop tap and dbt models

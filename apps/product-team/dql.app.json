@@ -60,6 +60,14 @@
       "enabled": true
     },
     {
+      "id": "dashboard-execute-internal",
+      "domain": "product",
+      "minClassification": "internal",
+      "allowedRoles": ["viewer", "pm", "owner"],
+      "accessLevel": "execute",
+      "enabled": true
+    },
+    {
       "id": "pm-execute-confidential",
       "domain": "product",
       "minClassification": "confidential",
