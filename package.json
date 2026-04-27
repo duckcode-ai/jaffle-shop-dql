@@ -7,15 +7,20 @@
     "dql:validate": "dql validate .",
     "dql:notebook": "dql notebook .",
     "dql:compile": "dql compile .",
+    "dql:app:build": "dql app build",
     "dql:lineage": "dql lineage",
+    "dql:agent:reindex": "dql agent reindex",
     "dql:mcp": "dql mcp",
     "dql:fmt": "dql fmt .",
     "dql:fmt:check": "dql fmt --check .",
     "dql:app:ls": "dql app ls",
-    "dql:app:show": "dql app show q4-finance",
+    "dql:app:show": "dql app show finance-cxo",
     "dql:schedule:list": "dql schedule list",
     "dql:schedule:start": "dql schedule start",
-    "dql:schedule:stop": "dql schedule stop"
+    "dql:schedule:stop": "dql schedule stop",
+    "seed:meltano": "meltano install && meltano run tap-jaffle-shop target-duckdb",
+    "seed:dbt": "dbt deps && dbt build --profiles-dir .",
+    "setup:warehouse": "npm run seed:meltano && npm run seed:dbt"
   },
   "dependencies": {
     "@duckcodeailabs/dql-cli": "^1.4.0",
