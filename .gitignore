@@ -27,6 +27,11 @@ dql-manifest.json
 *.run.json
 .dql-user-prefs.json
 
+# Local assistant/user state
+.claude/
+.user.yml
+package-lock.yml
+
 # OS
 .DS_Store
 Thumbs.db

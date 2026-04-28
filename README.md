@@ -39,8 +39,9 @@ DQL blocks and the Apps/notebooks that consume them.
 
 ![Jaffle lineage](docs/media/lineage.gif)
 
-**AI provider setup** — configure Claude, OpenAI, Gemini, Ollama, Slack, and
-email keys from Settings; missing providers stay optional until selected.
+**AI provider setup** — configure OpenAI, Anthropic, Gemini, Ollama, custom
+OpenAI-compatible endpoints, Slack, and email keys from Settings; missing
+providers stay optional until selected.
 
 ![AI provider settings](docs/media/agent.gif)
 
@@ -176,11 +177,13 @@ npm run dql:app:ls          # list first-class Apps
 npm run dql:app:show        # show finance-cxo
 npm run dql:schedule:list   # list App schedules
 npm run dql:mcp             # start MCP server for external agents
+npm run release:smoke       # doctor -> validate -> compile -> dbt sync -> lineage -> agent reindex
 ```
 
 ## AI Chat Providers
 
-The chat notebook can use any configured provider supported by DQL:
+Notebook and App chat use the provider selected in DQL Settings. You can also
+set providers through environment variables:
 
 ```bash
 export ANTHROPIC_API_KEY=...
@@ -194,15 +197,36 @@ The important behavior is provider-independent: certified blocks are searched
 first, generated SQL is marked uncertified, and proposed blocks go through
 review before becoming reusable business logic.
 
-## Setup Check
+## Release Smoke
 
 After setup, this should pass:
 
 ```bash
 npm run dql:doctor
+npm run dql:validate
 npm run dql:compile
+npm run dql:lineage
 npm run dql:app:build
 npm run dql:agent:reindex
+npm run release:smoke
+```
+
+Browser smoke path:
+
+1. Open [http://127.0.0.1:3474](http://127.0.0.1:3474).
+2. Open the Finance CXO App.
+3. Run the monthly review dashboard.
+4. Open scoped lineage and confirm the path reaches dbt models and sources.
+5. Ask a revenue question in the scoped App chat.
+6. Confirm the certified answer executes `Monthly Revenue` and shows data, chart, SQL/block, lineage, business context, and review status.
+7. Add the answer to the App as chart, data, or both.
+
+Release note: this repo is aligned to DQL `1.5.x`. Until
+`@duckcodeailabs/dql-cli@1.5.0` is published to npm, run the smoke script with a
+local DQL build:
+
+```bash
+DQL_BIN="node /path/to/dql/apps/cli/dist/index.js" bash scripts/release-smoke.sh
 ```
 
 ## Support

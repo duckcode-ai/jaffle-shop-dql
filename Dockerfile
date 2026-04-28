@@ -42,9 +42,8 @@ ENV PATH="/opt/dbt-venv/bin:${PATH}"
 # the Hub loader lock for target-duckdb.
 RUN pipx install --pip-args="setuptools<82" meltano==4.1.2
 
-# DQL CLI globally available - published to npm. Pinning to a compatible
-# minor; bump alongside the example.
-RUN npm i -g @duckcodeailabs/dql-cli@1.4.1
+# DQL CLI globally available - published to npm. Pin alongside this example.
+RUN npm i -g @duckcodeailabs/dql-cli@1.5.0
 
 WORKDIR /workspace
 
