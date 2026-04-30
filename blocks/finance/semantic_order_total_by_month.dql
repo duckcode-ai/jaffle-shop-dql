@@ -1,0 +1,14 @@
+block "Semantic Order Total by Month" {
+    domain = "finance"
+    type = "semantic"
+    status = "review"
+    description = "Example semantic block that starts from the imported dbt semantic metric `order_total` instead of raw SQL."
+    owner = "finance@jaffle.example"
+    tags = ["semantic", "dbt", "order-total", "example"]
+    metric = "order_total"
+    llmContext = "Use this as the clean dbt Semantic Layer example: DQL references the order_total metric while dbt remains the metric source of truth. Add dimensions and time grain in Block Studio when creating a concrete semantic slice."
+
+    visualization {
+        chart_type = "line"
+    }
+}

@@ -6,6 +6,14 @@
   "domain": "product",
   "owners": ["product@jaffle.example"],
   "tags": ["product", "weekly", "margin"],
+  "notebooks": [
+    {
+      "path": "notebooks/product_performance.dqlnb",
+      "title": "Product Performance",
+      "role": "analysis",
+      "visibility": "shared"
+    }
+  ],
 
   "members": [
     {

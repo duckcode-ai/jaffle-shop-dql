@@ -40,6 +40,15 @@ Open a shell:
 docker compose exec notebook bash
 ```
 
+Run tutorial smoke checks:
+
+```bash
+docker compose exec notebook dql validate .
+docker compose exec notebook dql compile .
+docker compose exec notebook dql app build
+docker compose exec notebook dql lineage
+```
+
 Reset:
 
 ```bash

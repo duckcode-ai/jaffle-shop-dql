@@ -6,6 +6,20 @@
   "domain": "finance",
   "owners": ["cfo@jaffle.example"],
   "tags": ["cfo", "monthly", "quarterly", "review"],
+  "notebooks": [
+    {
+      "path": "notebooks/revenue_review.dqlnb",
+      "title": "Monthly Revenue Review",
+      "role": "analysis",
+      "visibility": "shared"
+    },
+    {
+      "path": "notebooks/chat_with_data.dqlnb",
+      "title": "Chat With Governed Finance Data",
+      "role": "supporting",
+      "visibility": "shared"
+    }
+  ],
 
   "members": [
     {

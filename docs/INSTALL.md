@@ -91,6 +91,15 @@ Open [http://127.0.0.1:3474](http://127.0.0.1:3474).
 The DQL CLI is installed by `npm install` from this repo's `package.json`, so
 you do not need a global `dql` command for the native path.
 
+Shortcut after Python dependencies are ready:
+
+```bash
+npm run setup:warehouse
+npm run dql:compile
+npm run dql:app:build
+npm run dql:notebook
+```
+
 ## Expected Files After Setup
 
 ```text
@@ -110,3 +119,9 @@ dbt_packages/
 | `dbt build` cannot find `jaffle_raw` tables | Run `meltano run tap-jaffle-shop target-duckdb` first. |
 | Notebook shows schema introspection errors | Confirm `jaffle_shop.duckdb` exists and is not locked by another process. |
 | Chat cell reports missing provider credentials | Export an API key or use the Ollama profile. |
+
+## Next Step
+
+After the notebook opens, follow [tutorials/README.md](tutorials/README.md).
+The tutorials walk one use case at a time: finance, customer, product, semantic
+metrics, AI, lineage, and certification.

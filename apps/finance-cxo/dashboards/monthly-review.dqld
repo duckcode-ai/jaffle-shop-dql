@@ -58,6 +58,16 @@
         "title": "Customer segment breakdown",
         "block": { "blockId": "Customer Segments" },
         "viz": { "type": "table" }
+      },
+      {
+        "i": "gross-profit-trend",
+        "x": 0, "y": 11, "w": 12, "h": 5,
+        "title": "Gross profit and margin quality",
+        "block": { "blockId": "Revenue Mix by Month" },
+        "viz": {
+          "type": "line",
+          "options": { "x": "order_month", "y": "gross_profit" }
+        }
       }
     ]
   }

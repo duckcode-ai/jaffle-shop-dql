@@ -20,6 +20,13 @@ than the starter template on purpose: it shows how a single local user can
 package trusted analytics into business-facing Apps while keeping everything
 as source files.
 
+Use it as a learning path:
+
+```text
+setup warehouse -> inspect dbt models -> build DQL blocks -> run notebooks
+  -> open Apps -> trace lineage -> ask AI against certified context
+```
+
 ## UI Walkthrough
 
 **Finance App with live certified blocks** — the Apps Command Center packages
@@ -49,9 +56,11 @@ providers stay optional until selected.
 
 - DuckDB warehouse built from the canonical Jaffle Shop tap and dbt models
 - Certified DQL blocks for `finance`, `customer`, and `product`
+- SQL block examples and a dbt semantic metric block example
 - Notebook workflows for revenue review, cohorts, product performance, and AI chat
 - First-class Apps under `apps/<app-id>/dql.app.json`
 - Dashboard `.dqld` files with certified block references
+- Attached App notebooks so users can see the full analysis behind dashboards
 - Persona preview, policies, schedules, lineage, Skills, and MCP examples
 
 Legacy note: `apps/q4_finance.dql-app/` is kept only as a backwards
@@ -127,14 +136,16 @@ Open [http://127.0.0.1:3474](http://127.0.0.1:3474).
 dql:*` scripts do not require a global `dql` binary.
 
 See [docs/INSTALL.md](docs/INSTALL.md) for detailed setup and troubleshooting.
+For the guided product path, start with [docs/tutorials/README.md](docs/tutorials/README.md).
 
 ## Business Scenarios
 
 | Scenario | App | Notebook | Certified blocks |
 | --- | --- | --- | --- |
-| CFO monthly business review | `finance-cxo` | `notebooks/revenue_review.dqlnb` | `Monthly Revenue`, `Customer Segments` |
-| Regional CS cohort review | `customer-success` | `notebooks/customer_cohorts.dqlnb` | `Customer Segments` |
-| Product weekly performance review | `product-team` | `notebooks/product_performance.dqlnb` | `Top Products by Revenue` |
+| CFO monthly business review | `finance-cxo` | `notebooks/revenue_review.dqlnb` | `Monthly Revenue`, `Revenue Mix by Month`, `Customer Segments` |
+| Regional CS cohort review | `customer-success` | `notebooks/customer_cohorts.dqlnb` | `Customer Segments`, `Customer Cohort Returning Rate` |
+| Product weekly performance review | `product-team` | `notebooks/product_performance.dqlnb` | `Top Products by Revenue`, `Product Type Margin` |
+| dbt semantic metric example | Block Studio / finance | `docs/tutorials/04-semantic-metric-block.md` | `Semantic Order Total by Month` |
 | Ask questions with governed AI | any App | `notebooks/chat_with_data.dqlnb` | block-first KG retrieval |
 
 Read the full walkthrough in [docs/SCENARIOS.md](docs/SCENARIOS.md).
@@ -157,8 +168,12 @@ Read the full walkthrough in [docs/SCENARIOS.md](docs/SCENARIOS.md).
     q4_finance.dql-app/        # legacy compatibility example
   blocks/
     finance/monthly_revenue.dql
+    finance/revenue_mix_by_month.dql
+    finance/semantic_order_total_by_month.dql
     customer/customer_segments.dql
+    customer/cohort_returning_rate.dql
     product/top_products.dql
+    product/product_type_margin.dql
   models/                      # dbt staging + marts
   notebooks/
   semantic-layer/
@@ -169,6 +184,7 @@ Read the full walkthrough in [docs/SCENARIOS.md](docs/SCENARIOS.md).
 
 ```bash
 npm run dql:doctor          # check project and connection health
+npm run setup:warehouse     # run Meltano + dbt locally
 npm run dql:compile         # write dql-manifest.json
 npm run dql:app:build       # compile Apps and .dqld dashboards
 npm run dql:agent:reindex   # build local KG/FTS index for AI chat
@@ -221,13 +237,8 @@ Browser smoke path:
 6. Confirm the certified answer executes `Monthly Revenue` and shows data, chart, SQL/block, lineage, business context, and review status.
 7. Add the answer to the App as chart, data, or both.
 
-Release note: this repo is aligned to DQL `1.5.x`. Until
-`@duckcodeailabs/dql-cli@1.5.0` is published to npm, run the smoke script with a
-local DQL build:
-
-```bash
-DQL_BIN="node /path/to/dql/apps/cli/dist/index.js" bash scripts/release-smoke.sh
-```
+Release note: this repo is aligned to DQL `1.5.3+`. `npm install` pulls the
+published DQL CLI into this project, so a global `dql` install is not required.
 
 ## Support
 

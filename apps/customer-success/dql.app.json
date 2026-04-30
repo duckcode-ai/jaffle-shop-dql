@@ -6,6 +6,14 @@
   "domain": "customer",
   "owners": ["vp.cs@jaffle.example"],
   "tags": ["cs", "cohorts", "retention", "growth"],
+  "notebooks": [
+    {
+      "path": "notebooks/customer_cohorts.dqlnb",
+      "title": "Customer Cohorts",
+      "role": "analysis",
+      "visibility": "shared"
+    }
+  ],
 
   "members": [
     {

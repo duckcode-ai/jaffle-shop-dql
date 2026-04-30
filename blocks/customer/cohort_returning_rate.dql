@@ -1,0 +1,36 @@
+block "Customer Cohort Returning Rate" {
+    domain = "customer"
+    type = "custom"
+    status = "certified"
+    description = "Customer cohort size, average orders, lifetime spend, and returning-customer rate by first-order month and customer type."
+    owner = "growth@jaffle.example"
+    tags = ["customers", "cohorts", "retention", "growth"]
+    llmContext = "Use this block when growth or customer success asks about cohort size, returning rate, or which customer cohorts should receive lifecycle follow-up."
+
+    query = """
+        SELECT
+            DATE_TRUNC('month', first_ordered_at) AS cohort_month,
+            customer_type,
+            COUNT(*) AS cohort_size,
+            ROUND(AVG(count_lifetime_orders), 2) AS avg_lifetime_orders,
+            ROUND(AVG(lifetime_spend), 2) AS avg_lifetime_spend,
+            ROUND(
+                SUM(CASE WHEN count_lifetime_orders > 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+                1
+            ) AS pct_returning
+        FROM dim_customers
+        WHERE first_ordered_at IS NOT NULL
+        GROUP BY 1, 2
+        ORDER BY 1, 2
+    """
+
+    visualization {
+        chart = "bar"
+        x = cohort_month
+        y = cohort_size
+    }
+
+    tests {
+        assert row_count > 0
+    }
+}

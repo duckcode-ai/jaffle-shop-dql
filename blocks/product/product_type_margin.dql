@@ -1,0 +1,35 @@
+block "Product Type Margin" {
+    domain = "product"
+    type = "custom"
+    status = "certified"
+    description = "Revenue, units sold, gross margin, and margin percent by product type from dbt order-item and product marts."
+    owner = "product@jaffle.example"
+    tags = ["products", "margin", "product-type", "weekly-review"]
+    llmContext = "Use this block for product mix questions, especially when comparing food, drink, and other product types by margin quality."
+
+    query = """
+        SELECT
+            p.product_type,
+            COUNT(*) AS units_sold,
+            ROUND(SUM(oi.product_price), 2) AS revenue,
+            ROUND(SUM(oi.product_price - oi.supply_cost), 2) AS gross_margin,
+            ROUND(
+                SUM(oi.product_price - oi.supply_cost) * 100.0 / NULLIF(SUM(oi.product_price), 0),
+                1
+            ) AS margin_pct
+        FROM order_items oi
+        JOIN stg_products p ON oi.product_id = p.product_id
+        GROUP BY 1
+        ORDER BY gross_margin DESC
+    """
+
+    visualization {
+        chart = "bar"
+        x = product_type
+        y = gross_margin
+    }
+
+    tests {
+        assert row_count > 0
+    }
+}

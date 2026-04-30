@@ -1,0 +1,47 @@
+block "Revenue Mix by Month" {
+    domain = "finance"
+    type = "custom"
+    status = "certified"
+    description = "Monthly revenue, gross profit, food revenue, drink revenue, and margin percent from the dbt `fct_orders` mart."
+    owner = "finance@jaffle.example"
+    tags = ["orders", "revenue", "profit", "mix", "finance-mbr"]
+    llmContext = "Use this block when finance asks about food vs drink mix, gross profit, margin percent, or whether revenue quality changed month over month."
+
+    invariants = [
+        "revenue is non-negative for every order_month",
+        "gross_profit is revenue minus order_cost",
+        "gross_margin_pct is gross_profit divided by revenue"
+    ]
+
+    examples = [
+        { question = "How did gross profit trend by month?" },
+        { question = "Is food or drink driving more revenue?" }
+    ]
+
+    query = """
+        SELECT
+            DATE_TRUNC('month', ordered_at) AS order_month,
+            COUNT(*) AS order_count,
+            ROUND(SUM(order_total), 2) AS revenue,
+            ROUND(SUM(order_total - order_cost), 2) AS gross_profit,
+            ROUND(SUM(CASE WHEN is_food_order THEN order_total ELSE 0 END), 2) AS food_revenue,
+            ROUND(SUM(CASE WHEN is_drink_order THEN order_total ELSE 0 END), 2) AS drink_revenue,
+            ROUND(
+                SUM(order_total - order_cost) * 100.0 / NULLIF(SUM(order_total), 0),
+                1
+            ) AS gross_margin_pct
+        FROM fct_orders
+        GROUP BY 1
+        ORDER BY 1
+    """
+
+    visualization {
+        chart = "line"
+        x = order_month
+        y = gross_profit
+    }
+
+    tests {
+        assert row_count > 0
+    }
+}

@@ -12,7 +12,7 @@
       "id": "intro",
       "type": "markdown",
       "name": "Welcome",
-      "content": "# Welcome to the Jaffle Shop\n\nThis notebook is a 5-minute tour of DQL running on the Jaffle Shop sample warehouse.\n\n**What you're looking at**\n- A DuckDB file at `./jaffle_shop.duckdb` built by `dbt build --profiles-dir .`\n- The dbt project in `models/` is the semantic source of truth — metrics and dimensions come from there\n- Certified DQL blocks live under `blocks/<domain>/` and are referenced from notebooks like this one\n\n**Where to look next**\n- `notebooks/revenue_review.dqlnb` — finance monthly business review\n- `notebooks/customer_cohorts.dqlnb` — cohort retention analysis\n- `notebooks/product_performance.dqlnb` — top products + margin"
+      "content": "# Welcome to the Jaffle Shop\n\nThis notebook is a 5-minute tour of DQL running on the Jaffle Shop sample warehouse.\n\n**What you're looking at**\n- A DuckDB file at `./jaffle_shop.duckdb` built by `dbt build --profiles-dir .`\n- The dbt project in `models/` is the semantic source of truth — metrics and dimensions come from there\n- Certified DQL blocks live under `blocks/<domain>/` and are referenced from notebooks and Apps\n- Step-by-step tutorials live under `docs/tutorials/`\n\n**Where to look next**\n- `notebooks/revenue_review.dqlnb` — finance monthly business review\n- `notebooks/customer_cohorts.dqlnb` — cohort retention analysis\n- `notebooks/product_performance.dqlnb` — top products + margin\n- `docs/tutorials/04-semantic-metric-block.md` — dbt semantic metric to DQL semantic block"
     },
     {
       "id": "sql-tables",
@@ -68,7 +68,7 @@
       "id": "next-steps",
       "type": "markdown",
       "name": "next_steps",
-      "content": "## Next steps\n\n1. **Doctor** — `npm run dql:doctor` verifies the DuckDB connection and dbt-backed semantic layer.\n2. **Lineage** — open the Lineage panel (left rail) to see how `fct_orders` feeds the bound blocks above.\n3. **Browse blocks** — `blocks/finance/monthly_revenue.dql`, `blocks/customer/customer_segments.dql`, `blocks/product/top_products.dql`.\n4. **Make your own** — right-click any SQL cell → *Save as Block* to promote it into `blocks/<domain>/` with owner + tests.\n5. **Compile** — `npm run dql:compile` emits runnable artifacts; `npm run dql:lineage` prints the project graph."
+      "content": "## Next steps\n\n1. **Doctor** — `npm run dql:doctor` verifies the DuckDB connection and dbt-backed semantic layer.\n2. **Lineage** — open the Lineage panel (left rail) to see how `fct_orders` feeds the bound blocks above.\n3. **Browse blocks** — `blocks/finance/monthly_revenue.dql`, `blocks/finance/revenue_mix_by_month.dql`, `blocks/customer/cohort_returning_rate.dql`, `blocks/product/product_type_margin.dql`.\n4. **Follow tutorials** — start with `docs/tutorials/README.md` for finance, customer, product, semantic metrics, AI, lineage, and certification.\n5. **Make your own** — right-click any SQL cell → *Save as Block* to promote it into `blocks/<domain>/` with owner + tests.\n6. **Compile** — `npm run dql:compile` emits runnable artifacts; `npm run dql:lineage` prints the project graph."
     }
   ]
 }

@@ -24,7 +24,7 @@
     "setup:warehouse": "npm run seed:meltano && npm run seed:dbt"
   },
   "dependencies": {
-    "@duckcodeailabs/dql-cli": "^1.5.0",
+    "@duckcodeailabs/dql-cli": "^1.5.3",
     "duckdb": "^1.4.4"
   }
 }

@@ -66,6 +66,16 @@
         "title": "Segment metrics",
         "block": { "blockId": "Customer Segments" },
         "viz": { "type": "table" }
+      },
+      {
+        "i": "cohort-returning-rate",
+        "x": 0, "y": 11, "w": 12, "h": 5,
+        "title": "Returning rate by cohort",
+        "block": { "blockId": "Customer Cohort Returning Rate" },
+        "viz": {
+          "type": "line",
+          "options": { "x": "cohort_month", "y": "pct_returning" }
+        }
       }
     ]
   }
