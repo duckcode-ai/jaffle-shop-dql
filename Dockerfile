@@ -43,7 +43,7 @@ ENV PATH="/opt/dbt-venv/bin:${PATH}"
 RUN pipx install --pip-args="setuptools<82" meltano==4.1.2
 
 # DQL CLI globally available - published to npm. Pin alongside this example.
-RUN npm i -g @duckcodeailabs/dql-cli@1.5.0
+RUN npm i -g @duckcodeailabs/dql-cli@1.5.3
 
 WORKDIR /workspace
 
