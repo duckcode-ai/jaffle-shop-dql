@@ -1,0 +1,42 @@
+block "Monthly Active Customers" {
+    domain = "customer"
+    type = "custom"
+    status = "certified"
+    description = "Count of distinct customers who placed at least one order in each calendar month, computed from the dbt `fct_orders` mart. Backs the customer engagement view of the monthly business review."
+    owner = "growth@jaffle.example"
+    tags = ["customers", "mau", "engagement", "monthly", "finance-mbr"]
+    llmContext = "Use this block when finance, growth, or customer success asks about Monthly Active Customers (MAC/MAU), engagement trends month over month, or how many distinct customers transacted in a given month. Backed by the `monthly_active_customers` business contract authored in jaffle-shop-DataLex under DataLex/commerce — Stage 1 of the DataLex+DQL walkthrough. When compile-time contract enforcement ships in DQL (Phase 2 of the OSS roadmap), this block will reference that contract by id and fail compilation if the upstream model schema drifts."
+
+    invariants = [
+        "monthly_active_customers is a positive integer for every order_month",
+        "order_month is the first day of a calendar month",
+        "monthly_active_customers <= total_distinct_customers in the project"
+    ]
+
+    examples = [
+        { question = "How many active customers did we have last month?", sql = "SELECT monthly_active_customers FROM {{ ref('Monthly Active Customers') }} ORDER BY order_month DESC LIMIT 1" },
+        { question = "Did monthly active customers grow over the last six months?" },
+        { question = "What's our MAU trend by quarter?" }
+    ]
+
+    query = """
+        SELECT
+            DATE_TRUNC('month', ordered_at) AS order_month,
+            COUNT(DISTINCT customer_id) AS monthly_active_customers
+        FROM fct_orders
+        WHERE ordered_at IS NOT NULL
+        GROUP BY 1
+        ORDER BY 1
+    """
+
+    visualization {
+        chart = "line"
+        x = order_month
+        y = monthly_active_customers
+    }
+
+    tests {
+        assert row_count > 0
+        assert min(monthly_active_customers) > 0
+    }
+}

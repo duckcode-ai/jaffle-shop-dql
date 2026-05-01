@@ -15,6 +15,8 @@
   <img src="docs/hero.svg" alt="DQL notebook rendering the Jaffle Shop revenue review" width="880">
 </p>
 
+> **Part of a two-stage walkthrough.** This repo is **Stage 2** — build certified DQL blocks and serve trusted answers to AI agents via the DQL MCP. **Stage 1** is [jaffle-shop-DataLex](https://github.com/duckcode-ai/jaffle-shop-DataLex), where you author the data contracts and conceptual model these blocks reference. Each repo also stands alone if you only want one half of the story.
+
 This repo is the full worked Jaffle Shop example for DQL OSS. It is larger
 than the starter template on purpose: it shows how a single local user can
 package trusted analytics into business-facing Apps while keeping everything
